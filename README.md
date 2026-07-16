@@ -140,7 +140,7 @@ Wenn dir das Projekt gefällt, freue ich mich über:
 Siehe:
 
 ```text
-99_lizenz.md
+LICENSE.md
 ```
 
 Kurzfassung:
@@ -149,6 +149,7 @@ Kurzfassung:
 - ✅ Änderungen und Erweiterungen erlaubt
 - ✅ Eigene Projekte dürfen darauf aufbauen
 - ℹ️ Bei öffentlichem Content oder kommerziellen Projekten ist eine Namensnennung von **Mario Alka** erforderlich.
+- ℹ️ Sonst keine Einschränkungen bei der Nutzung auch bei kommerziellen Projekten
 
 ---
 
