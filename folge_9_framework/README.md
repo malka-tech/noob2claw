@@ -29,6 +29,8 @@ Dadurch entsteht ein konsistentes und langfristig wartbares Projekt.
 
 Dieses Repository enthält unter anderem:
 
+- ✅ Installationsanleitung --> (Damit auch starten): 00_Installationsanleitung.md
+- ✅ Startprompt für OpenClaw --> (Das nutzen um zu prompten): 00_Startprompt.md
 - ✅ Grundentwicklung
 - ✅ Verzeichnisstruktur
 - ✅ Datenbankschema
@@ -47,7 +49,7 @@ Dieses Repository enthält unter anderem:
 - ✅ Formular-Standards
 - ✅ Tabellen-Standards
 - ✅ Lizenz
-- ✅ Startprompt für OpenClaw
+
 
 ---
 
