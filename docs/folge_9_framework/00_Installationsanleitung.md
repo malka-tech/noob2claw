@@ -320,6 +320,21 @@ findmnt /mnt/noob2claw
 
 ---
 
+# Git Clone für die Vorlagen
+
+```bash
+sudo mkdir -p /home/noobclaw/noob2claw_vorlage
+
+sudo chown "$USER":"$USER" /home/noobclaw/noob2claw_vorlage
+
+git clone https://github.com/malka-tech/noob2claw.git /home/noobclaw/noob2claw_vorlage
+
+cd /home/noobclaw/noob2claw_vorlage
+```
+
+
+---
+
 # OpenClaw starten
 
 ```bash
@@ -333,12 +348,12 @@ Prompt:
 ```text
 Führe die Datei
 
-/home/noobclaw/prompts/00_Startprompt.md
+/home/noobclaw/noob2claw_vorlage/docs/folge_9_framework/00_Startprompt.md
 
 vollständig aus und erstelle das Projekt.
 
 Beachte alle weiteren MD-Dateien unter
-/home/noobclaw/prompts
+/home/noobclaw/noob2claw_vorlage/docs/folge_9_framework/
 als verbindliche Projektdokumentation.
 
 Arbeite ausschließlich im gemounteten
