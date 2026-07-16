@@ -323,6 +323,9 @@ findmnt /mnt/noob2claw
 # Git Clone für die Vorlagen
 
 ```bash
+sudo apt update
+sudo apt install -y git
+
 sudo mkdir -p /home/noobclaw/noob2claw_vorlage
 
 sudo chown "$USER":"$USER" /home/noobclaw/noob2claw_vorlage
