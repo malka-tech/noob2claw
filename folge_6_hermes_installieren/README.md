@@ -4,6 +4,15 @@ Diese Anleitung gehört zur **Noob2Claw**-Videoserie und beschreibt die Linux-Be
 
 ---
 
+# 🎥 Passendes Video
+
+Wer die komplette Installation Schritt für Schritt sehen möchte, findet
+hier das passende Video der Noob2Claw-Serie:
+
+👉 [https://youtu.be/c07kQmEOcUk](https://www.youtube.com/watch?v=oFsuvDHyCq4)
+
+---
+
 # Voraussetzungen
 
 - Ubuntu VM (empfohlen als Klon der OpenClaw-VM)
