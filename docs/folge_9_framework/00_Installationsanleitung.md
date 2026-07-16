@@ -335,6 +335,15 @@ cd /home/noobclaw/noob2claw_vorlage
 
 ---
 
+# 00_Startprompt.md anpassen mit eigenen Werten
+
+```bash
+nano /home/noobclaw/noob2claw_vorlage/docs/folge_9_framework/00_Startprompt.md
+```
+
+---
+
+
 # OpenClaw auf dem Ubuntu Server starten
 
 ```bash
