@@ -1,4 +1,4 @@
-# <p align="center"><img src="images/logo.png" width="420"></p>
+# <p align="center"><img src="/images/logo.png" width="420"></p>
 
 # Noob2Claw Framework
 
