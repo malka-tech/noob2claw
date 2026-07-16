@@ -209,7 +209,7 @@ sshfs \
     -o idmap=user \
     -o reconnect \
     -o ServerAliveInterval=15 \
-    -o ServerAliveCountMax=3 \
+    -o ServerAliveCountMax=3
 ```
 
 ---
