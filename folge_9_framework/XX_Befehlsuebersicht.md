@@ -12,6 +12,14 @@ hostname -I
 ```
 
 ---
+# Debian – Rechte für den www-data für SSH Zugriff vergeben
+
+```bash
+sudo usermod \
+    -s /bin/bash \
+    www-data
+```
+---
 
 # Debian – Webroot vorbereiten
 
