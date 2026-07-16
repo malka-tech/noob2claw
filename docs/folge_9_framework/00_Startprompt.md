@@ -32,8 +32,8 @@ SYSTEM_STANDARD_THEME="system"
 SYSTEM_BASIS_URL="http://noobclaw.local"
 AGENT_TEST_URL="http://192.168.178.XX"
 
-SYSTEM_LOGO_DATEI="/img/logo/logo.svg"
-SYSTEM_FAVICON_DATEI="/img/logo/favicon.svg"
+SYSTEM_LOGO_DATEI="/home/noobclaw/noob2claw_vorlage/images/logo.png"
+SYSTEM_FAVICON_DATEI="/home/noobclaw/noob2claw_vorlage/images/logo.png"
 
 FARBE_PRIMAER="#2563EB"
 FARBE_PRIMAER_HOVER="#1D4ED8"
