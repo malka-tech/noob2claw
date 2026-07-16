@@ -366,6 +366,24 @@ http://192.168.178.XX
 
 ---
 
+# Entwicklung live beobachten
+
+## Neue Dateien in Echtzeit überwachen
+
+```bash
+watch -n 2 'find /mnt/noob2claw -maxdepth 2 -type f | sort'
+```
+
+## Projekt-Verzeichnisbaum anzeigen
+
+```bash
+tree -L 2 /mnt/noob2claw
+# Ggf. per:
+sudo apt install -y tree
+```
+
+---
+
 # PHP-Syntax prüfen
 
 ```bash
