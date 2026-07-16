@@ -59,23 +59,6 @@ sudo install \
     /var/www/.ssh/authorized_keys
 ```
 
----
-
-# Debian – SSH-Key hinterlegen
-
-```bash
-sudo nano /var/www/.ssh/authorized_keys
-```
-
-Danach:
-
-```bash
-sudo chown -R www-data:www-data /var/www/.ssh
-sudo chmod 700 /var/www/.ssh
-sudo chmod 600 /var/www/.ssh/authorized_keys
-```
-
----
 
 # Debian – Passwortlogin deaktivieren
 
@@ -159,15 +142,6 @@ ssh-keygen \
     -N ""
 ```
 
----
-
-# Ubuntu – Public Key anzeigen
-
-```bash
-cat ~/.ssh/id_ed25519_noob2claw.pub
-```
-
----
 
 # Ubuntu – Hostkey übernehmen
 
@@ -195,6 +169,31 @@ ssh \
     -i ~/.ssh/id_ed25519_noob2claw \
     www-data@192.168.178.XX
 ```
+
+---
+
+# Ubuntu – Public Key anzeigen
+
+```bash
+cat ~/.ssh/id_ed25519_noob2claw.pub
+```
+
+---
+
+# Debian – SSH-Key hinterlegen (Puplic Key von Ubuntu)
+
+```bash
+sudo nano /var/www/.ssh/authorized_keys
+```
+
+Danach:
+
+```bash
+sudo chown -R www-data:www-data /var/www/.ssh
+sudo chmod 700 /var/www/.ssh
+sudo chmod 600 /var/www/.ssh/authorized_keys
+```
+
 
 ---
 
