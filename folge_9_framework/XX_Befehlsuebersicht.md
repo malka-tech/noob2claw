@@ -210,7 +210,6 @@ sshfs \
     -o reconnect \
     -o ServerAliveInterval=15 \
     -o ServerAliveCountMax=3 \
-    -o default_permissions
 ```
 
 ---
@@ -241,6 +240,44 @@ rm /mnt/noob2claw/test.txt
 sudo nano \
 /etc/systemd/system/noob2claw-sshfs.service
 ```
+
+```bash
+[Unit]
+Description=Noob2Claw SSHFS Mount
+Documentation=man:sshfs(1)
+Wants=network-online.target
+After=network-online.target
+Before=apache2.service
+
+[Service]
+Type=simple
+User=noobclaw
+Group=noobclaw
+
+ExecStartPre=/usr/bin/mkdir -p /mnt/noob2claw
+
+ExecStart=/usr/bin/sshfs \
+    www-data@10.220.50.5:/var/www/noobclaw \
+    /mnt/noob2claw \
+    -f \
+    -o IdentityFile=/home/noobclaw/.ssh/id_ed25519_noob2claw \
+    -o UserKnownHostsFile=/home/noobclaw/.ssh/known_hosts \
+    -o IdentitiesOnly=yes \
+    -o idmap=user \
+    -o reconnect \
+    -o ServerAliveInterval=15 \
+    -o ServerAliveCountMax=3 \
+    -o BatchMode=yes
+
+ExecStop=/usr/bin/fusermount3 -u /mnt/noob2claw
+
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+```
+
 
 ---
 
