@@ -335,7 +335,7 @@ cd /home/noobclaw/noob2claw_vorlage
 
 ---
 
-# OpenClaw starten
+# OpenClaw auf dem Ubuntu Server starten
 
 ```bash
 sudo -iu noobclaw
