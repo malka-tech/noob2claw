@@ -1,16 +1,25 @@
-00_Startprompt.md
-Startprompt für die Grundentwicklung
+# 00_Startprompt.md
+
+# Startprompt für die Grundentwicklung
+
 Dieser Prompt wird an den OpenClaw-Agenten übergeben, nachdem das Projekt vom Webserver unter folgendem Pfad eingebunden wurde:
+
 ```text
 /mnt/noob2claw
 ```
+
 Der eingebundene Ordner entspricht auf dem späteren Webserver:
+
 ```text
 /var/www/noobclaw
 ```
+
 Vor der Ausführung müssen ausschließlich die Variablen im folgenden Abschnitt angepasst werden.
+
 ---
-Vom Benutzer anzupassende Variablen
+
+# Vom Benutzer anzupassende Variablen
+
 ```text
 SYSTEM_NAME="NoobClaw"
 SYSTEM_KURZNAME="NoobClaw"
@@ -51,22 +60,32 @@ ERSTER_ADMIN_PASSWORT="HIER_EIN_TEMPORAERES_SICHERES_PASSWORT_EINTRAGEN"
 ENTWICKLUNGSMODUS="1"
 DEBUG_AUSGABE_IM_BROWSER="0"
 ```
-Sicherheitsregel für die Variablen
+
+## Sicherheitsregel für die Variablen
+
 Die Werte von:
+
 ```text
 DB_PASSWORT
 ERSTER_ADMIN_PASSWORT
 ```
+
 dürfen:
-niemals in Logs geschrieben werden,
-niemals in HTML ausgegeben werden,
-niemals in JavaScript landen,
-niemals unverschlüsselt in der Datenbank gespeichert werden,
-niemals in einer öffentlich abrufbaren Datei verbleiben.
+
+- niemals in Logs geschrieben werden,
+- niemals in HTML ausgegeben werden,
+- niemals in JavaScript landen,
+- niemals unverschlüsselt in der Datenbank gespeichert werden,
+- niemals in einer öffentlich abrufbaren Datei verbleiben.
+
 Das initiale Admin-Passwort wird ausschließlich gehasht gespeichert.
+
 Nach erfolgreicher Initialisierung soll der Agent darauf hinweisen, dass das temporäre Passwort aus diesem Prompt entfernt beziehungsweise geändert werden muss.
+
 ---
-Prompt für den OpenClaw-Agenten
+
+# Prompt für den OpenClaw-Agenten
+
 ```text
 Du bist der verantwortliche Senior-Softwarearchitekt und Hauptentwickler dieses Projekts.
 
@@ -1123,21 +1142,29 @@ API:
 MCP:
 {{AGENT_TEST_URL}}/mcp.php
 ```
+
 Empfohlene Erreichbarkeitsprüfung:
+
 ```bash
 curl -I --max-time 10 "{{AGENT_TEST_URL}}/"
 ```
+
 Empfohlene Prüfung der Weboberfläche:
+
 ```bash
 curl -sS --max-time 10 "{{AGENT_TEST_URL}}/" \
     -o /tmp/noobclaw_startseite.html
 ```
+
 Empfohlene API-Statusprüfung:
+
 ```bash
 curl -sS --max-time 10 \
     "{{AGENT_TEST_URL}}/api.php?modul=system&aktion=status"
 ```
+
 Empfohlene MCP-Initialisierungsprüfung:
+
 ```bash
 curl -sS --max-time 10 \
     -X POST \
@@ -1145,122 +1172,165 @@ curl -sS --max-time 10 \
     --data '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}' \
     "{{AGENT_TEST_URL}}/mcp.php"
 ```
+
 Authentifizierte Tests dürfen erst durchgeführt werden, nachdem passende Testzugänge kontrolliert angelegt wurden.
+
 Falls {{AGENT_TEST_URL}} nicht erreichbar ist:
-brich nicht sofort die komplette Entwicklung ab,
-prüfe Mount, Dateien, PHP-Syntax und Datenbank trotzdem,
-dokumentiere die fehlende Erreichbarkeit,
-nenne mögliche Ursachen wie Apache, VirtualHost, Firewall, Mount oder Dateirechte,
-führe keine erfundenen erfolgreichen HTTP-Tests im Abschlussbericht auf.
+
+- brich nicht sofort die komplette Entwicklung ab,
+- prüfe Mount, Dateien, PHP-Syntax und Datenbank trotzdem,
+- dokumentiere die fehlende Erreichbarkeit,
+- nenne mögliche Ursachen wie Apache, VirtualHost, Firewall, Mount oder Dateirechte,
+- führe keine erfundenen erfolgreichen HTTP-Tests im Abschlussbericht auf.
+
 ============================================================
 27. TESTS
+============================================================
+
 Führe nach der Entwicklung mindestens folgende Prüfungen aus:
-PHP-Syntaxprüfung aller PHP-Dateien
-Prüfung des Funktionsloaders
-Datenbankverbindung
-Vorhandensein aller Core-Tabellen
-Login mit dem initialen Administrator
-Logout
-Sessionanlage
-Sessionbeendigung
-Rechteprüfung
-Navigation
-Light Mode
-Dark Mode
-API-Health
-MCP-Initialize beziehungsweise MCP-Status
-Fehlerlogging
-CSRF-Schutz
-ungültige Loginversuche
-nicht autorisierte API-Anfrage
-nicht autorisierte MCP-Anfrage
-responsive Grunddarstellung
+
+1. PHP-Syntaxprüfung aller PHP-Dateien
+2. Prüfung des Funktionsloaders
+3. Datenbankverbindung
+4. Vorhandensein aller Core-Tabellen
+5. Login mit dem initialen Administrator
+6. Logout
+7. Sessionanlage
+8. Sessionbeendigung
+9. Rechteprüfung
+10. Navigation
+11. Light Mode
+12. Dark Mode
+13. API-Health
+14. MCP-Initialize beziehungsweise MCP-Status
+15. Fehlerlogging
+16. CSRF-Schutz
+17. ungültige Loginversuche
+18. nicht autorisierte API-Anfrage
+19. nicht autorisierte MCP-Anfrage
+20. responsive Grunddarstellung
+
 Führe mindestens aus:
+
 find {{PROJEKT_MOUNT}} -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+
 Führe kontrollierte HTTP- und Funktionstests über {{AGENT_TEST_URL}} durch. Falls die URL nicht erreichbar ist, dokumentiere dies und führe alle lokal möglichen Prüfungen trotzdem aus.
+
 Lösche keine Daten, um Tests zu vereinfachen.
+
 ============================================================
 28. ARBEITSWEISE
+============================================================
+
 Arbeite in klaren Phasen:
+
 Phase 1:
 Dokumentation lesen und Bestand analysieren
+
 Phase 2:
 Verzeichnisstruktur und Bootstrap
+
 Phase 3:
 Datenbank und Initialisierung
+
 Phase 4:
 Login, Sessions, Benutzer und Rechte
+
 Phase 5:
 Navigation und Grundlayout
+
 Phase 6:
 Dashboard und Core-Seiten
+
 Phase 7:
 API und MCP
+
 Phase 8:
 Logging und Fehlerbehandlung
+
 Phase 9:
 Tests und Korrekturen
+
 Phase 10:
 Abschlussbericht
+
 Stelle nicht nach jeder kleinen Datei Rückfragen.
+
 Arbeite selbstständig weiter, solange:
-keine Sicherheitsentscheidung offen ist,
-keine destruktive Änderung notwendig ist,
-alle benötigten Werte vorhanden sind.
+
+- keine Sicherheitsentscheidung offen ist,
+- keine destruktive Änderung notwendig ist,
+- alle benötigten Werte vorhanden sind.
+
 ============================================================
 29. QUALITÄTSREGELN
+============================================================
+
 Verbindlich:
-kleine, klar benannte Funktionen
-keine doppelten Funktionen
-keine Copy-and-Paste-Business-Logik
-sprechende deutsche Namen
-technische Standardbegriffe dürfen englisch bleiben
-keine riesigen Dateien ohne fachlichen Grund
-keine ungenutzten Funktionen
-keine toten Variablen
-keine Hardcodierung von Projektfarben
-keine Hardcodierung von Zugangsdaten
-keine direkten SQL-Abfragen in Seiten
-keine HTML-Ausgabe in Business-Funktionen
-keine ungeprüften Request-Parameter
-keine erfundenen Schnittstellen
-keine Mock-Daten als echte Systemdaten
-keine unvollständigen Sicherheitsprüfungen
+
+- kleine, klar benannte Funktionen
+- keine doppelten Funktionen
+- keine Copy-and-Paste-Business-Logik
+- sprechende deutsche Namen
+- technische Standardbegriffe dürfen englisch bleiben
+- keine riesigen Dateien ohne fachlichen Grund
+- keine ungenutzten Funktionen
+- keine toten Variablen
+- keine Hardcodierung von Projektfarben
+- keine Hardcodierung von Zugangsdaten
+- keine direkten SQL-Abfragen in Seiten
+- keine HTML-Ausgabe in Business-Funktionen
+- keine ungeprüften Request-Parameter
+- keine erfundenen Schnittstellen
+- keine Mock-Daten als echte Systemdaten
+- keine unvollständigen Sicherheitsprüfungen
+
 ============================================================
 30. ABSCHLUSSBERICHT
+============================================================
+
 Erstelle nach Abschluss einen klar strukturierten Bericht.
+
 Der Bericht enthält:
-Zusammenfassung
-Angelegte Verzeichnisse
-Angelegte Dateien
-Angelegte Tabellen
-Angelegte Basisdaten
-Implementierte Funktionen
-Implementierte Seiten
-Implementierte API-Funktionen
-Implementierte MCP-Funktionen
-Durchgeführte Tests
-Testergebnisse
-Offene Punkte
-Bewusste Abweichungen von der Dokumentation
-Sicherheitsrelevante Hinweise
-Noch auszuführende Serverbefehle
-Verwendete Test-URL
-Ergebnis der Erreichbarkeits- und HTTP-Prüfung
-URL für den ersten Login
-Hinweis zum Ändern des initialen Admin-Passworts
+
+1. Zusammenfassung
+2. Angelegte Verzeichnisse
+3. Angelegte Dateien
+4. Angelegte Tabellen
+5. Angelegte Basisdaten
+6. Implementierte Funktionen
+7. Implementierte Seiten
+8. Implementierte API-Funktionen
+9. Implementierte MCP-Funktionen
+10. Durchgeführte Tests
+11. Testergebnisse
+12. Offene Punkte
+13. Bewusste Abweichungen von der Dokumentation
+14. Sicherheitsrelevante Hinweise
+15. Noch auszuführende Serverbefehle
+16. Verwendete Test-URL
+17. Ergebnis der Erreichbarkeits- und HTTP-Prüfung
+18. URL für den ersten Login
+19. Hinweis zum Ändern des initialen Admin-Passworts
+
 Gib keine geheimen Passwörter oder Schlüssel im Abschlussbericht aus.
+
 ============================================================
 31. START
+============================================================
+
 Beginne jetzt.
+
 Prüfe zuerst:
-ob {{PROJEKT_MOUNT}} existiert,
-ob der Mount beschreibbar ist,
-welche Markdown-Dateien vorhanden sind,
-welche Projektdateien bereits existieren,
-ob PHP verfügbar ist,
-ob die MariaDB-Verbindung hergestellt werden kann,
-ob {{AGENT_TEST_URL}} erreichbar ist.
+
+- ob {{PROJEKT_MOUNT}} existiert,
+- ob der Mount beschreibbar ist,
+- welche Markdown-Dateien vorhanden sind,
+- welche Projektdateien bereits existieren,
+- ob PHP verfügbar ist,
+- ob die MariaDB-Verbindung hergestellt werden kann,
+- ob {{AGENT_TEST_URL}} erreichbar ist.
+
 Lies danach die gesamte Dokumentation und starte anschließend selbstständig mit Phase 1 bis Phase 10.
 ```
 
@@ -1273,39 +1343,53 @@ Vor dem Einfügen in OpenClaw werden die Platzhalter der Form:
 ```text
 {{VARIABLE}}
 ```
+
 durch die Werte aus dem Variablenblock ersetzt.
+
 Beispiel:
+
 ```text
 {{SYSTEM_NAME}}
 ```
+
 wird zu:
+
 ```text
 NoobClaw
 ```
+
 Alternativ kann der gesamte Variablenblock gemeinsam mit dem Prompt an den Agenten übergeben werden, wenn der Agent die Variablen zuverlässig selbst auflösen kann.
+
 ---
-Empfohlener Umfang der ersten Entwicklung
+
+# Empfohlener Umfang der ersten Entwicklung
+
 Dieser Prompt startet bewusst nicht sofort mit sämtlichen späteren Fachmodulen.
+
 Der erste Entwicklungsstand konzentriert sich auf:
-Architektur,
-Datenbank,
-Benutzer,
-Rechte,
-Sessions,
-Navigation,
-Design,
-Agenten-Grundverwaltung,
-API-Grundstruktur,
-MCP-Grundstruktur,
-Logging,
-Einstellungen.
+
+- Architektur,
+- Datenbank,
+- Benutzer,
+- Rechte,
+- Sessions,
+- Navigation,
+- Design,
+- Agenten-Grundverwaltung,
+- API-Grundstruktur,
+- MCP-Grundstruktur,
+- Logging,
+- Einstellungen.
+
 Weitere Funktionen wie:
-Modellverwaltung,
-Prompts,
-Workflows,
-Scheduler,
-Agentenkommunikation,
-Skills,
-externe APIs,
-vollständige MCP-Tool-Sammlung
+
+- Modellverwaltung,
+- Prompts,
+- Workflows,
+- Scheduler,
+- Agentenkommunikation,
+- Skills,
+- externe APIs,
+- vollständige MCP-Tool-Sammlung
+
 werden danach als eigene Entwicklungsschritte ergänzt.
