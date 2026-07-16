@@ -1,348 +1,159 @@
-\# Noob2Claw – Agentic Webinterface Starter Kit
+<p align="center">
+  <img src="images/logo.png" alt="Noob2Claw Logo" width="220">
+</p>
 
+<h1 align="center">Noob2Claw – Agentic Webinterface Starter Kit</h1>
 
+<p align="center">
+Von der Idee zum fertigen Webinterface – entwickelt mit KI.
+</p>
 
-> \*\*Von der Idee zum fertigen Webinterface – entwickelt mit KI.\*\*
+---
 
+# 🚀 Was ist Noob2Claw?
 
+**Noob2Claw** ist eine vollständige Entwicklungsgrundlage für ein modernes, KI-gestütztes Webinterface.
 
-Dieses Repository enthält die komplette Architektur- und Projektdokumentation für den Aufbau eines modernen, KI-gestützten Webinterfaces.
+Anstatt einer KI nur einen einzelnen Prompt zu geben, erhält sie eine komplette Softwarearchitektur mit verbindlichen Regeln.
 
+Die Markdown-Dokumentation dient als Wissensbasis für KI-Agenten wie **OpenClaw**, damit diese ein vollständiges PHP-/MariaDB-System selbstständig entwickeln können.
 
+---
 
-Die Dokumente dienen als Wissensbasis für KI-Agenten wie \*\*OpenClaw\*\*, damit diese ein vollständiges PHP-/MariaDB-Websystem selbstständig entwickeln können.
+# 🎯 Ziel des Projekts
 
+Dieses Repository liefert keine fertige Anwendung, sondern eine komplette Entwicklungsgrundlage.
 
+Die KI arbeitet auf Basis von:
 
-\---
+- Projektarchitektur
+- Verzeichnisstruktur
+- Datenbankschema
+- Coding Rules
+- API- und MCP-Konzept
+- Benutzer- und Rechteverwaltung
+- UI- und Designsystem
+- CSS-Standards
+- Formular- und Tabellenstandards
+- zentralem Startprompt
 
+Dadurch entstehen deutlich konsistentere und wartbarere Projekte.
 
+---
 
-\# Ziel des Projekts
+# 📦 Inhalt
 
+Das Repository enthält unter anderem:
 
+- Grundentwicklung
+- Verzeichnisstruktur
+- Datenbankschema
+- Coding Rules
+- Seitenaufbau
+- Navigation
+- API & MCP
+- Benutzer & Rechte
+- Module & Funktionen
+- Dashboard
+- Core-Datenbank
+- Einstellungen
+- Design-System
+- CSS-Standards
+- Formular-Standards
+- Tabellen-Standards
+- Startprompt
+- Lizenz
 
-Anstatt einer KI einfach nur zu sagen:
+---
 
+# 🛠 Technologien
 
+- PHP
+- MariaDB
+- Apache
+- HTML
+- CSS
+- JavaScript
+- OpenClaw
+- MCP (Model Context Protocol)
+- REST API
 
-> "Erstelle mir ein Webinterface"
+Es wird bewusst auf große Frameworks verzichtet.
 
+---
 
-
-erhält sie eine vollständige Softwarearchitektur.
-
-
-
-Dadurch entwickelt die KI nicht einfach nur Code, sondern hält sich an:
-
-
-
-\- eine feste Architektur
-
-\- ein einheitliches Datenbankschema
-
-\- Coding-Standards
-
-\- UI- und Designrichtlinien
-
-\- Sicherheitsregeln
-
-\- Formular- und Tabellenstandards
-
-\- API- und MCP-Konzept
-
-\- Benutzer- und Rechteverwaltung
-
-
-
-Das Ergebnis ist deutlich konsistenter, wartbarer und professioneller.
-
-
-
-\---
-
-
-
-\# Was befindet sich in diesem Repository?
-
-
-
-Dieses Repository enthält unter anderem:
-
-
-
-\- Projektarchitektur
-
-\- Verzeichnisstruktur
-
-\- Datenbankschema
-
-\- Core-Datenbanktabellen
-
-\- Coding Rules
-
-\- Seitenaufbau
-
-\- Navigation
-
-\- API-Konzept
-
-\- MCP-Konzept
-
-\- Benutzer- und Rechtekonzept
-
-\- Modulstruktur
-
-\- Einstellungen
-
-\- UI-Designsystem
-
-\- CSS-Standards
-
-\- Formularstandards
-
-\- Tabellenstandards
-
-\- Startprompt für OpenClaw
-
-\- Lizenz
-
-
-
-Diese Dokumente dienen als Grundlage für die automatische Entwicklung eines kompletten Systems.
-
-
-
-\---
-
-
-
-\# Unterstützte Technologien
-
-
-
-Das Konzept wurde für folgende Technologien entwickelt:
-
-
-
-\- PHP
-
-\- MariaDB
-
-\- Apache
-
-\- HTML
-
-\- CSS
-
-\- JavaScript
-
-\- OpenClaw
-
-\- MCP (Model Context Protocol)
-
-\- REST API
-
-
-
-Es werden bewusst keine großen Frameworks vorausgesetzt.
-
-
-
-\---
-
-
-
-\# Entwicklungsprinzip
-
-
-
-Die Entwicklung erfolgt vollständig dokumentationsgetrieben.
-
-
+# 🧠 Entwicklungsprinzip
 
 ```text
-
-Markdown Dokumentation
-
-&#x20;           │
-
-&#x20;           ▼
-
-OpenClaw Agent
-
-&#x20;           │
-
-&#x20;           ▼
-
-PHP + MariaDB
-
-&#x20;           │
-
-&#x20;           ▼
-
+Markdown-Dokumentation
+            │
+            ▼
+       OpenClaw
+            │
+            ▼
+      PHP + MariaDB
+            │
+            ▼
 Lauffähiges Webinterface
-
 ```
 
+---
 
+# 🎥 Noob2Claw Videoserie
 
-Die Markdown-Dateien definieren sämtliche Regeln, nach denen die KI entwickelt.
+Die komplette Entstehung dieses Projekts wird Schritt für Schritt auf YouTube dokumentiert.
 
+In der Serie zeige ich unter anderem:
 
+- Installation von OpenClaw
+- Aufbau der Entwicklungsumgebung
+- Erstellung der Architektur
+- Entwicklung mit KI
+- Vibe Coding
+- Agentic Workflows
+- REST API
+- MCP
+- Aufbau eines vollständigen Webinterfaces
 
-\---
+👉 **Playlist:**
 
+https://www.youtube.com/watch?v=ZckcAkLHFVw&list=PL2Bg_doUPbASMUDKYPnMlysRYmUlJJ9NP
 
+---
 
-\# Für wen ist dieses Projekt gedacht?
+# 🤝 Mitmachen
 
-
-
-Dieses Repository richtet sich an:
-
-
-
-\- Softwareentwickler
-
-\- Systemarchitekten
-
-\- KI-Enthusiasten
-
-\- Unternehmen
-
-\- OpenClaw-Nutzer
-
-\- MCP-Entwickler
-
-\- alle, die moderne Software gemeinsam mit KI entwickeln möchten
-
-
-
-\---
-
-
-
-\# Noob2Claw – Die passende Videoserie
-
-
-
-Die komplette Entstehung dieses Projekts wird Schritt für Schritt in meiner YouTube-Serie \*\*Noob2Claw\*\* dokumentiert.
-
-
-
-Dort zeige ich unter anderem:
-
-
-
-\- Installation von OpenClaw
-
-\- Aufbau der Entwicklungsumgebung
-
-\- Architekturplanung
-
-\- Erstellung der Dokumentation
-
-\- Entwicklung mit OpenClaw
-
-\- KI-gestützte Softwareentwicklung
-
-\- lokale KI-Modelle
-
-\- MCP
-
-\- REST API
-
-\- Agentic Workflows
-
-
-
-👉 \*\*YouTube-Playlist:\*\*
-
-
-
-https://www.youtube.com/watch?v=ZckcAkLHFVw\&list=PL2Bg\_doUPbASMUDKYPnMlysRYmUlJJ9NP
-
-
-
-\---
-
-
-
-\# Mitmachen
-
-
-
-Verbesserungsvorschläge, Ideen und Erweiterungen sind jederzeit willkommen.
-
-
+Verbesserungen sind jederzeit willkommen.
 
 Wenn dir das Projekt gefällt, freue ich mich über:
 
+- ⭐ Star auf GitHub
+- 🍴 Fork
+- 🛠 Pull Request
+- 💬 Feedback
+- 📺 Abo auf YouTube
 
+---
 
-\- ⭐ einen GitHub Star
+# 📄 Lizenz
 
-\- 🍴 einen Fork
-
-\- 🛠️ Pull Requests
-
-\- 💬 Feedback
-
-\- 📺 ein Abo meines YouTube-Kanals
-
-
-
-\---
-
-
-
-\# Lizenz
-
-
-
-Bitte beachte die Datei:
-
-
+Siehe:
 
 ```text
-
-99\_lizenz.md
-
+99_lizenz.md
 ```
-
-
 
 Kurzfassung:
 
+- ✅ Freie private und interne Nutzung
+- ✅ Änderungen und Erweiterungen erlaubt
+- ✅ Eigene Projekte dürfen darauf aufbauen
+- ℹ️ Bei öffentlichem Content oder kommerziellen Projekten ist eine Namensnennung von **Mario Alka** erforderlich.
 
+---
 
-\- ✅ Freie Nutzung für private und interne Systeme
+# ℹ️ Hinweis
 
-\- ✅ Änderungen und Erweiterungen ausdrücklich erlaubt
+Dieses Repository ist **kein fertiges Framework**.
 
-\- ✅ Eigene Projekte dürfen darauf aufbauen
-
-\- ℹ️ Bei öffentlichem Content oder kommerziellen Projekten ist eine Namensnennung von \*\*Mario Alka\*\* erforderlich.
-
-
-
-\---
-
-
-
-\# Hinweis
-
-
-
-Dieses Repository ist \*\*kein fertiges Webframework\*\*.
-
-
-
-Es ist eine vollständige Entwicklungsgrundlage, mit der KI-Agenten wie OpenClaw selbstständig hochwertige Software entwickeln können.
-
-
-
-Die eigentliche Stärke liegt nicht in einzelnen Code-Dateien, sondern in der Kombination aus Architektur, Standards, Regeln und Prompts.
-
+Es ist eine dokumentationsgetriebene Entwicklungsbasis, mit der KI-Agenten wie OpenClaw hochwertige Software nach festen Standards entwickeln können.
