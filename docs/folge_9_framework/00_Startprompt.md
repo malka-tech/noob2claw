@@ -21,8 +21,8 @@ Vor der Ausführung müssen ausschließlich die Variablen im folgenden Abschnitt
 # Vom Benutzer anzupassende Variablen
 
 ```text
-SYSTEM_NAME="NoobClaw"
-SYSTEM_KURZNAME="NoobClaw"
+SYSTEM_NAME="Noob2Claw"
+SYSTEM_KURZNAME="Noob2Claw"
 SYSTEM_UNTERTITEL="Agentic Webinterface"
 SYSTEM_BESCHREIBUNG="Zentrale Verwaltung von Benutzern, KI-Agenten, API, MCP, Logs und Systemeinstellungen."
 
