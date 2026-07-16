@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="images/logo.png" alt="Noob2Claw Logo" width="220">
+  <img src="images/logo.png" alt="Noob2Claw Logo" width="420">
 </p>
 
 <h1 align="center">Noob2Claw – Agentic Webinterface Starter Kit</h1>
