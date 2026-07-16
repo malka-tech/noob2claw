@@ -333,12 +333,12 @@ Prompt:
 ```text
 Führe die Datei
 
-/home/noob2claw/prompts/00_Startprompt.md
+/home/noobclaw/prompts/00_Startprompt.md
 
 vollständig aus und erstelle das Projekt.
 
 Beachte alle weiteren MD-Dateien unter
-/home/noob2claw/prompts
+/home/noobclaw/prompts
 als verbindliche Projektdokumentation.
 
 Arbeite ausschließlich im gemounteten
