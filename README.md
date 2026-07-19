@@ -145,10 +145,13 @@ LICENSE.md
 
 Kurzfassung:
 
+Bei Forks, die Dritten zugänglich gemacht werden, und bei jeder Weitergabe an Dritte sind die Namensnennung von **Mario Alka** und der Erhalt des Lizenzhinweises erforderlich.
+
 - ✅ Freie private und interne Nutzung
 - ✅ Änderungen und Erweiterungen erlaubt
 - ✅ Eigene Projekte dürfen darauf aufbauen
 - ℹ️ Bei öffentlichem Content oder kommerziellen Projekten ist eine Namensnennung von **Mario Alka** erforderlich.
+- ℹ️ Forks und andere Weitergaben sind erlaubt. Dabei müssen der Lizenzhinweis erhalten bleiben und **Mario Alka** als ursprünglicher Autor beziehungsweise Quelle genannt werden.
 - ℹ️ Sonst keine Einschränkungen bei der Nutzung auch bei kommerziellen Projekten
 
 ---

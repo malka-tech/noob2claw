@@ -161,6 +161,8 @@ Bitte beachte:
 
 Kurzfassung:
 
+Bei Forks, die Dritten zugänglich gemacht werden, und bei jeder Weitergabe an Dritte sind die Namensnennung von **Mario Alka** und der Erhalt des Lizenzhinweises erforderlich.
+
 - ✅ Freie private Nutzung
 - ✅ Freie interne Nutzung
 - ✅ Änderungen ausdrücklich erlaubt

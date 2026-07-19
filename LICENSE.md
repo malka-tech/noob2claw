@@ -108,17 +108,36 @@ Es besteht keine Pflicht, Änderungen oder Erweiterungen zurückzugeben oder öf
 
 ---
 
-# 5. Weitergabe
+# 5. Forks und Weitergabe
 
-Die Inhalte dürfen weitergegeben werden.
+Die Inhalte dürfen geforkt und weitergegeben werden. Sobald ein Fork oder eine Kopie ganz oder teilweise Dritten zugänglich gemacht wird, ist Mario Alka als ursprünglicher Autor beziehungsweise Quelle zu nennen.
 
-Bei öffentlicher Weitergabe muss dieser Lizenzhinweis erhalten bleiben.
+Dies gilt unabhängig davon, ob die Bereitstellung oder Weitergabe:
+
+- öffentlich oder nicht öffentlich,
+- kostenlos oder kostenpflichtig,
+- privat oder kommerziell,
+- unverändert oder in bearbeiteter Form
+
+erfolgt.
+
+Bei jedem bereitgestellten Fork und bei jeder Weitergabe muss dieser Lizenzhinweis erhalten bleiben. Die Namensnennung muss außerdem an einer angemessenen und für die Empfänger leicht zugänglichen Stelle erfolgen, beispielsweise in der README-Datei, der Projektbeschreibung, den Credits oder den Lizenzhinweisen.
 
 Werden nur einzelne wesentliche Bestandteile weitergegeben, muss ein Hinweis auf Mario Alka als ursprünglichen Autor oder Quelle enthalten sein.
+
+Eine geeignete Namensnennung ist beispielsweise:
+
+```text
+Dieses Projekt ist ein Fork beziehungsweise basiert auf Arbeiten von Mario Alka.
+```
+
+Das bloße Anlegen einer ausschließlich intern oder privat genutzten Arbeitskopie ohne Zugang für Dritte gilt nicht als Weitergabe im Sinne dieses Abschnitts.
 
 ---
 
 # 6. Keine weiteren Nutzungseinschränkungen
+
+Die erforderliche Namensnennung gilt ebenfalls für bereitgestellte Forks und jede Weitergabe an Dritte.
 
 Abgesehen von der erforderlichen Namensnennung bei:
 
@@ -186,11 +205,11 @@ Namensnennung von Mario Alka erforderlich.
 Kommerzielles Projekt:
 Namensnennung von Mario Alka erforderlich.
 
+Forks und Weitergabe an Dritte:
+Namensnennung von Mario Alka erforderlich und Lizenzhinweis beibehalten.
+
 Änderung und Weiterentwicklung:
 Frei erlaubt.
-
-Weitergabe:
-Erlaubt, Lizenzhinweis beibehalten.
 ```
 
 ---
