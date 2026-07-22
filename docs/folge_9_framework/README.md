@@ -2,6 +2,10 @@
 
 > **Ein vollständiges Architektur-Framework für die Entwicklung moderner Webanwendungen mit KI-Agenten wie OpenClaw.**
 
+## 🌐 Noob2Claw-Webseite
+
+Weitere Informationen, Anleitungen und Neuigkeiten zum Projekt findet ihr auf [noob2claw.de](https://noob2claw.de/).
+
 ---
 
 ## Was ist das?

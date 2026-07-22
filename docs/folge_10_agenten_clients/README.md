@@ -2,6 +2,10 @@
 
 In Folge 10 entsteht die technische Grundlage, um externe KI-Agenten zentral über das Noob2Claw-Webinterface zu verwalten und mit Aufgaben zu versorgen.
 
+# 🌐 Noob2Claw-Webseite
+
+Weitere Informationen, Anleitungen und Neuigkeiten zum Projekt findet ihr auf [noob2claw.de](https://noob2claw.de/).
+
 ---
 
 # Ziel der Folge
@@ -55,4 +59,3 @@ Noob2Claw Core
 # Ergebnis
 
 Nach dieser Folge können externe Agenten-Clients zentral registriert, überwacht und mit Aufträgen versorgt werden. Damit ist die Grundlage für den Agentenchat aus Folge 11 geschaffen.
-

@@ -2,6 +2,10 @@
 
 In Folge 13 wird das Wiki aus Folge 12 über das Model Context Protocol (MCP) für OpenClaw und andere autorisierte Agenten zugänglich gemacht.
 
+# 🌐 Noob2Claw-Webseite
+
+Weitere Informationen, Anleitungen und Neuigkeiten zum Projekt findet ihr auf [noob2claw.de](https://noob2claw.de/).
+
 ---
 
 # Ziel der Folge
@@ -54,4 +58,3 @@ Wiki-Inhalt oder Ergebnis
 # Ergebnis
 
 Nach dieser Folge können autorisierte Agenten das Noob2Claw-Wiki kontrolliert als Wissensquelle verwenden und Inhalte bearbeiten. Änderungen bleiben durch Rechteprüfung, Agentenzuordnung, Versionierung und Logging nachvollziehbar.
-

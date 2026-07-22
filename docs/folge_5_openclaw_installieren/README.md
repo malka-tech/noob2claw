@@ -7,6 +7,10 @@ zu installieren.
 Am Ende läuft OpenClaw direkt auf einer eigenen Ubuntu-VM und kann über
 die Kommandozeile, die TUI und das Web-Dashboard verwendet werden.
 
+# 🌐 Noob2Claw-Webseite
+
+Weitere Informationen, Anleitungen und Neuigkeiten zum Projekt findet ihr auf [noob2claw.de](https://noob2claw.de/).
+
 ------------------------------------------------------------------------
 
 # 🎥 Passendes Video

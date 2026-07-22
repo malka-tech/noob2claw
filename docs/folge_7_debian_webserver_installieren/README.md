@@ -6,6 +6,10 @@ Apache, PHP 8.4 und MariaDB.
 
 Die VM bildet die Grundlage für das spätere OpenClaw-Webinterface.
 
+# 🌐 Noob2Claw-Webseite
+
+Weitere Informationen, Anleitungen und Neuigkeiten zum Projekt findet ihr auf [noob2claw.de](https://noob2claw.de/).
+
 ------------------------------------------------------------------------
 
 # 🎥 Passendes Video

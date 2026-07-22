@@ -2,6 +2,10 @@
 
 In Folge 12 wird ein professionelles Wiki schrittweise mit gezielten Prompts aufgebaut. Der Schwerpunkt liegt auf einem kontrollierten Vibe-Coding-Workflow statt auf einem einzigen großen Entwicklungsauftrag.
 
+# 🌐 Noob2Claw-Webseite
+
+Weitere Informationen, Anleitungen und Neuigkeiten zum Projekt findet ihr auf [noob2claw.de](https://noob2claw.de/).
+
 ---
 
 # Ziel der Folge
@@ -52,4 +56,3 @@ Nächsten Teilbereich umsetzen
 # Ergebnis
 
 Nach dieser Folge steht ein Wiki als zentrale Wissensbasis bereit. Gleichzeitig zeigt die Folge, wie größere Module durch kleine, kontrollierte und nachvollziehbare Vibe-Coding-Schritte entstehen.
-

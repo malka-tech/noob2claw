@@ -2,6 +2,10 @@
 
 Diese Anleitung gehört zur **Noob2Claw**-Videoserie und beschreibt die Linux-Befehle, um eine bestehende Ubuntu-VM für Hermes vorzubereiten und den Hermes AI-Agent zu installieren.
 
+# 🌐 Noob2Claw-Webseite
+
+Weitere Informationen, Anleitungen und Neuigkeiten zum Projekt findet ihr auf [noob2claw.de](https://noob2claw.de/).
+
 ---
 
 # 🎥 Passendes Video

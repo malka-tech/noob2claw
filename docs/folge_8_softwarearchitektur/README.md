@@ -6,6 +6,10 @@
 
 Dieses Repository begleitet die **Noob2Claw-Videoserie** und bildet die Grundlage für die komplette Weboberfläche, die wir über die kommenden Folgen gemeinsam entwickeln.
 
+# 🌐 Noob2Claw-Webseite
+
+Weitere Informationen, Anleitungen und Neuigkeiten zum Projekt findet ihr auf [noob2claw.de](https://noob2claw.de/).
+
 📺 **Video zur Folge 08**
 
 https://www.youtube.com/watch?v=ZckcAkLHFVw

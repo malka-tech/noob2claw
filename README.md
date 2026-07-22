@@ -8,6 +8,10 @@
 Von der Idee zum fertigen Webinterface – entwickelt mit KI.
 </p>
 
+<p align="center">
+  🌐 <a href="https://noob2claw.de/"><strong>noob2claw.de</strong></a>
+</p>
+
 ---
 
 # 🚀 Was ist Noob2Claw?

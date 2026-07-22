@@ -2,6 +2,10 @@
 
 In Folge 11 wird auf Basis der Agenten- und Clientverwaltung aus Folge 10 ein vollständiger Chat zwischen Benutzern und externen KI-Agenten entwickelt.
 
+# 🌐 Noob2Claw-Webseite
+
+Weitere Informationen, Anleitungen und Neuigkeiten zum Projekt findet ihr auf [noob2claw.de](https://noob2claw.de/).
+
 ---
 
 # Ziel der Folge
@@ -55,4 +59,3 @@ Antwort im Chatverlauf
 # Ergebnis
 
 Nach dieser Folge steht ein zentraler Agentenchat bereit, der die vorhandenen Clients nutzt und Gespräche, Dateien, Statusinformationen und Agentenantworten in einer gemeinsamen Oberfläche zusammenführt.
-
