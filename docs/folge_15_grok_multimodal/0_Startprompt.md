@@ -549,11 +549,19 @@ naechste_pruefung_am
 ablauf_am
 ```
 
-Der vorhandene Integrations-Cronjob aus Folge 14 prüft offene Aufträge in sinnvollen Abständen. Alternativ darf ein vorhandenes zentrales Jobsystem verwendet werden. Es wird kein zweiter Scheduler gebaut.
+Der in Folge 14 erstmals geschaffene zentrale Cron-Einstieg mit dem
+Integrations-Dispatcher prüft offene Aufträge in sinnvollen Abständen. Erweitere
+diesen vorhandenen Weg; baue weder eine zweite Cron-Datei noch einen parallelen
+Scheduler.
 
 Anforderungen:
 
+- asynchrones Videopolling als eigener erlaubter Aufgabentyp im vorhandenen
+  Integrations-Dispatcher aus Folge 14,
 - begrenzte Polling-Frequenz und Laufzeit,
+- atomarer Claim je Medienauftrag mit kontrollierter Ablaufzeit,
+- begrenzter exponentieller Backoff und definierte maximale Gesamtdauer,
+- klare terminale Statuswerte für Erfolg, Fehler, Abbruch und Ablauf,
 - Statusabfrage nur über passenden Integrationseintrag,
 - Fehlerisolierung je Auftrag,
 - Abbruch beziehungsweise Ablauf festgefahrener Aufträge,

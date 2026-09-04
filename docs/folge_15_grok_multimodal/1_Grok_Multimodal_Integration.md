@@ -403,7 +403,7 @@ Testwerkzeug
     ↓ lokalen Auftrag anlegen
 xAI-Video starten
     ↓ request_id speichern
-Integrations-Cronjob oder vorhandenes Jobsystem
+Integrations-Dispatcher aus Folge 14
     ↓ Status zeitversetzt prüfen
 Video sicher herunterladen und lokal speichern
 ```
@@ -431,7 +431,15 @@ naechste_pruefung_am
 ablauf_am
 ```
 
-Der bestehende Integrations-Cronjob aus Folge 14 oder das vorhandene Jobsystem nutzt Backoff, Maximaldauer und atomare Sperren. Kein zweiter Scheduler.
+Der in Folge 14 erstmals geschaffene zentrale Cron-Einstieg und sein
+Integrations-Dispatcher nutzen Backoff, Maximaldauer und atomare Sperren. Folge 15
+erweitert diesen Mechanismus und erzeugt keinen zweiten Scheduler.
+
+Videopolling wird als eigener erlaubter Aufgabentyp dieses Dispatchers
+registriert. Jeder Medienauftrag wird atomar geclaimt. Pollintervall, begrenzter
+exponentieller Backoff, maximale Gesamtdauer und terminale Statuswerte für Erfolg,
+Fehler, Abbruch und Ablauf sind verbindlich. Nach einem terminalen Status wird der
+Auftrag nicht erneut beim Anbieter abgefragt.
 
 ---
 

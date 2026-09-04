@@ -54,7 +54,9 @@ Grundregeln:
 - Business-Logik liegt unter `inc/` oder in der vorhandenen Klassenstruktur.
 - Navigationsdateien enthalten keine Business-Logik und kein SQL.
 - Vorhandene Loader, Datenbankfunktionen, UI-Komponenten und Sicherheitsfunktionen werden wiederverwendet.
-- Es wird kein zweites Einstellungs-, Rechte-, Logging- oder Cronjob-System gebaut.
+- Es wird kein zweites Einstellungs-, Rechte- oder Logging-System gebaut.
+- Da in den Folgen 9 bis 13 noch kein zentraler Anwendungs-Cronjob umgesetzt
+  wurde, erstellt Folge 14 den ersten zentralen Noob2Claw-Cron-Einstieg.
 - Geheimnisse erscheinen nie im Klartext in Oberfläche oder Logs.
 - Migrationen sind idempotent und nicht destruktiv.
 
@@ -91,7 +93,7 @@ Dokumentiere kurz, welche vorhandenen Strukturen wiederverwendet werden.
 
 ---
 
-# 3. Bestehende Cronjob-Technik weiterverwenden
+# 3. Ersten zentralen Anwendungs-Cronjob schaffen
 
 Suche im ganzen Projekt nach `cron`, `cronjob`, `scheduler`, Zeitplanfeldern, Sperren und Laufprotokollen. Kläre:
 
@@ -101,7 +103,22 @@ Suche im ganzen Projekt nach `cron`, `cronjob`, `scheduler`, Zeitplanfeldern, Sp
 4. Wie werden Start, Ende, Status, Dauer und Fehler protokolliert?
 5. Wie werden Aufgaben als fällig erkannt?
 
-Erweitere genau diese Technik. Baue keinen unabhängigen zweiten Scheduler. Falls nur ein einfacher zentraler Cronjob existiert, ergänze dort einen getrennten Integrations-Dispatcher.
+Die Folgen 9 bis 13 enthalten noch keinen zentralen Anwendungsscheduler. Falls
+auch im aktiven Projekt keiner existiert, erstelle in Folge 14 erstmals einen
+zentralen CLI-Einstieg `cron.php`. Existiert entgegen der Dokumentation bereits
+ein geeigneter zentraler Einstieg, erweitere diesen kompatibel statt einen
+zweiten Scheduler daneben zu bauen.
+
+Der neue Einstieg:
+
+- ist ausschließlich für PHP-CLI vorgesehen und lehnt Webaufrufe ab,
+- lädt denselben Bootstrap und dieselbe Business-Logik wie die Anwendung,
+- akzeptiert eine feste Allowlist von Aufgaben, zunächst `integrationen`,
+- besitzt eine globale atomare Sperre mit kontrollierter Ablaufzeit,
+- liefert verlässliche Exit-Codes,
+- schreibt sichere Anwendungslogs ohne Secrets,
+- enthält selbst keine Integrationsfachlogik, sondern ruft den Dispatcher auf,
+- lässt sich später um weitere zentrale Aufgaben erweitern.
 
 ---
 
@@ -257,31 +274,66 @@ Pflichtregeln:
 - stabiler Zeitplan ohne unkontrolliertes Driften,
 - gleiche Business-Logik für manuelle und geplante Aufrufe.
 
+Speichere alle Zeitpunkte in UTC. Berechne `naechster_lauf_am` vom bisherigen
+Solltermin aus, überspringe verpasste Intervalle ohne Nachholschleife und begrenze
+jeden Dispatcher-Lauf durch deterministische Reihenfolge, Batchgröße und maximale
+Gesamtlaufzeit. Nicht bearbeitete Restmengen bleiben für den nächsten Lauf fällig.
+Neben der globalen Sperre benötigt jeder Eintrag einen atomaren Claim mit TTL;
+reguläre Freigaben erfolgen in `finally`.
+
+Protokolliere auch den globalen Dispatcher-Lauf. Dafür darf
+`integration_eintrag_id` bei `lauf_typ = dispatcher` kontrolliert `NULL` sein oder
+eine eigene Dispatcher-Lauftabelle verwendet werden. Erfasst werden Start, Ende,
+Dauer, Exit-Code und die Anzahl geprüfter, ausgeführter, übersprungener und
+fehlgeschlagener Einträge.
+
 Open-Meteo wird höchstens einmal pro Stunde fällig. Der System-Cronjob darf den Dispatcher jede Minute starten; die Fälligkeitsprüfung entscheidet über die Ausführung.
+
+Implementiere den zentralen Einstieg im Webroot als `cron.php`. Der Aufruf
+`php cron.php integrationen` startet genau den Integrations-Dispatcher. Unbekannte
+Aufgaben, Webaufrufe, fehlgeschlagener Bootstrap und Datenbankfehler enden mit
+einem sicheren Fehler und einem Exit-Code ungleich `0`. Kontrollierte Fehler
+einzelner Integrationseinträge werden isoliert protokolliert und verhindern die
+Bearbeitung anderer fälliger Einträge nicht.
 
 ---
 
-# 10. Cronjob im Video einrichten
+# 10. Ersten Cronjob im Video einrichten
 
-Ermittle den korrekten realen Aufruf aus der bestehenden Anwendung. Bevorzuge PHP-CLI, absolute Pfade und den vorhandenen Webserver-Benutzer. Beispielhaft, nicht blind übernehmen:
+Ermittle den korrekten realen Aufruf der neu erstellten `cron.php`. Bevorzuge
+PHP-CLI, absolute Pfade und den tatsächlichen Webserver-Benutzer. Beispielhaft,
+nicht blind übernehmen:
 
 ```cron
 * * * * * /usr/bin/php /var/www/noobclaw/cron.php integrations >> /var/log/noob2claw-integrationen-cron.log 2>&1
 ```
 
-Falls bereits ein zentraler Cron-Einstieg existiert, muss genau dieser erweitert und verwendet werden.
+Nutze `flock` auch auf Betriebssystemebene als zusätzliche Schutzschicht, sofern
+es auf dem Zielsystem verfügbar ist. Beispiel:
+
+```cron
+* * * * * /usr/bin/flock -n /run/lock/noob2claw-cron.lock /usr/bin/php /var/www/noobclaw/cron.php integrationen >> /var/log/noob2claw-integrationen-cron.log 2>&1
+```
+
+Passe Lock- und Logpfad an die Schreibrechte des ausführenden Benutzers an. Die
+atomare Anwendungssperre bleibt trotzdem Pflicht; `flock` ersetzt sie nicht.
 
 Im Video:
 
 1. PHP-Pfad und korrekten Betriebssystembenutzer ermitteln.
 2. Befehl zunächst manuell ausführen.
 3. Exit-Code und Anwendungslog prüfen.
-4. Crontab des richtigen Benutzers öffnen.
-5. Eintrag mit absoluten Pfaden anlegen.
-6. doppelte Einträge ausschließen.
-7. nach dem nächsten Lauf Cron- und Integrationslogs prüfen.
-8. letzten Versuch, letzten Erfolg und Wetterdaten in der Oberfläche kontrollieren.
-9. einen Fehlerfall zeigen und danach die korrekte Konfiguration wiederherstellen.
+4. Schreibrechte auf Projekt-, Lock- und Logpfad unter diesem Benutzer prüfen.
+5. mit `crontab -l` den bisherigen Zustand und doppelte Einträge prüfen.
+6. Crontab des richtigen Benutzers öffnen.
+7. Eintrag mit eindeutigem Kommentar und absoluten Pfaden anlegen.
+8. mit `crontab -l` den exakt gespeicherten Eintrag kontrollieren.
+9. nach dem nächsten Lauf Cron- und Integrationslogs prüfen.
+10. letzten Versuch, letzten Erfolg und Wetterdaten in der Oberfläche kontrollieren.
+11. einen parallelen zweiten manuellen Start als gesperrt nachweisen,
+12. einen Fehlerfall zeigen und danach die korrekte Konfiguration wiederherstellen,
+13. einen Neustart des Cron-Dienstes nur durchführen, wenn das Zielsystem dies
+    nach der Crontab-Änderung tatsächlich verlangt.
 
 Der finale tatsächlich verwendete Cron-Eintrag gehört in den Abschlussbericht. Keine Tokens oder Secrets in Kommandozeile, Crontab oder Logumleitung.
 
@@ -322,7 +374,12 @@ Teste mindestens:
 - sichere Behandlung deaktivierter Standards,
 - fälligen und nicht fälligen Cron-Eintrag,
 - Schutz vor paralleler Doppelverarbeitung,
+- Wiederaufnahme nach abgelaufener verwaister Sperre,
 - Fehlerisolierung zwischen Einträgen,
+- begrenzte Batchgröße, Gesamtlaufzeit und Fehler-Backoff,
+- stabiler UTC-Zeitplan ohne Drift oder Nachholschleife,
+- Dispatcher-Laufprotokoll mit Exit-Code und Zählerständen,
+- sicherer Abbruch bei Datenbank- oder Bootstrapfehler,
 - Logs ohne Secrets,
 - korrekten Open-Meteo-Modus, Attribution und sichere Behandlung des API-Keys,
 - Cron-Ausführung als vorgesehener Systembenutzer,

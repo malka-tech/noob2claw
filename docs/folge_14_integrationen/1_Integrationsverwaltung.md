@@ -236,6 +236,14 @@ ausgeloest_durch_id
 
 `lauf_typ` unterscheidet mindestens `cronjob`, `manuell`, `verbindungstest` und `datenabholung`.
 
+Globale Dispatcher-Läufe werden ebenfalls nachvollziehbar gespeichert. Entweder
+ist `integration_eintrag_id` für `lauf_typ = dispatcher` bewusst `NULL`, oder es
+wird eine eigene Tabelle `integrationen_dispatcher_laeufe` verwendet. Erforderlich
+sind mindestens Start, Ende, Dauer, Status, Exit-Code, Zahl geprüfter,
+ausgeführter, übersprungener und fehlgeschlagener Einträge sowie eine sichere
+Fehlermeldung. Ein künstlicher Integrationseintrag für den Dispatcher ist nicht
+zulässig.
+
 ## Wetterdaten
 
 Falls keine passende Struktur existiert, werden mindestens gespeichert:
@@ -417,7 +425,17 @@ Ohne gültigen Standard entsteht ein klarer fachlicher Fehler. Es wird nicht der
 
 # 9. Cronjob-Architektur
 
-Der System-Cronjob stößt den bestehenden zentralen Mechanismus regelmäßig an. Der Integrations-Dispatcher ermittelt daraus fällige Einträge.
+Die Folgen 9 bis 13 liefern noch keinen zentralen Anwendungsscheduler. Folge 14
+führt deshalb erstmals einen zentralen PHP-CLI-Einstieg `cron.php` ein. Dieser
+kennt nur erlaubte Aufgabenschlüssel und stößt mit `integrationen` den
+Integrations-Dispatcher an. Fachlogik bleibt in den zentralen Funktionen unter
+`inc/` und wird nicht in `cron.php` dupliziert.
+
+Der Einstieg lehnt HTTP-Aufrufe ab, lädt den vorhandenen Bootstrap, erwirbt eine
+globale atomare Sperre, liefert definierte Exit-Codes und protokolliert ohne
+Secrets. Ein optionales Betriebssystem-`flock` ergänzt diese Sperre, ersetzt sie
+aber nicht. Spätere Folgen erweitern denselben Einstieg um neue Aufgaben, statt
+weitere Cron-Dateien oder Scheduler zu schaffen.
 
 Ein Eintrag ist fällig, wenn er und sein Cronjob aktiv sind, die Klasse vorhanden ist, sie Cronjobs unterstützt, der nächste Lauf erreicht wurde und keine gültige Sperre besteht.
 
@@ -437,12 +455,29 @@ gesperrt
 
 Der Dispatcher kann jede Minute laufen. Open-Meteo besitzt mindestens 3600 Sekunden Intervall. Nach Erfolg wird der nächste stabile Planzeitpunkt berechnet. Fehler nutzen einen begrenzten vorhandenen Backoff oder Retry ohne Endlosschleife.
 
+Zeitplanung und Lastbegrenzung:
+
+- Datenbankzeiten werden einheitlich in UTC gespeichert.
+- `naechster_lauf_am` wird vom vorherigen Solltermin aus weitergerechnet, nicht
+  einfach vom Abschlusszeitpunkt; dadurch driftet der Plan nicht.
+- Verpasste Intervalle werden bis zum nächsten zukünftigen Solltermin
+  übersprungen und nicht in einer unkontrollierten Nachholschleife ausgeführt.
+- Eine deterministische Sortierung, ein konfigurierbares Batchlimit und eine
+  maximale Gesamtlaufzeit begrenzen jeden Dispatcher-Lauf.
+- Nicht bearbeitete Restmengen bleiben fällig und werden beim nächsten Lauf
+  berücksichtigt.
+- Ein atomarer Claim pro Eintrag schützt zusätzlich zur globalen Sperre vor
+  Doppelverarbeitung. Sperren werden in `finally` freigegeben; eine TTL fängt
+  Prozessabbruch und verwaiste Sperren ab.
+- Fehler-Backoff besitzt eine Obergrenze und wird nach Erfolg zurückgesetzt.
+
 Bei PHP-CLI gilt empfohlen:
 
 - Exit-Code `0`: Dispatcher technisch abgeschlossen; einzelne kontrollierte Fachfehler sind protokolliert.
 - Exit-Code ungleich `0`: Dispatcher selbst konnte nicht sicher laufen, etwa bei Datenbankausfall.
 
-Die bestehende Projektkonvention hat Vorrang.
+Vorhandene allgemeine Projektkonventionen für Bootstrap, Logging und Fehlerausgabe
+haben Vorrang.
 
 ---
 
@@ -471,7 +506,7 @@ Verbindlich:
 - nur ein fest verdrahteter Eintrag pro Klasse,
 - frei eingebbare PHP-Klassennamen,
 - API-Aufrufe oder SQL in Navigationsdateien,
-- zweites Cronjob-System,
+- weitere parallele Cronjob-Systeme neben dem in Folge 14 geschaffenen Einstieg,
 - ungeschützte öffentliche Cron-URL,
 - Secrets in HTML, Logs, Exceptions, URLs oder Cronzeilen,
 - Überschreiben gültiger Wetterdaten durch Fehlerantworten,
@@ -491,7 +526,7 @@ Verbindlich:
 7. Open-Meteo liefert normalisierte Wetterdaten für mehrere Standorte.
 8. Nutzungsmodus, Kunden-API-Key und Attribution werden korrekt und sicher behandelt.
 9. Letzte gültige Daten bleiben bei Fehlern erhalten.
-10. Der bestehende Cronjob ruft fällige Integrationsjobs ohne Doppelverarbeitung auf.
+10. Der in Folge 14 geschaffene zentrale Cronjob ruft fällige Integrationsjobs ohne Doppelverarbeitung auf.
 11. Fehler werden je Eintrag isoliert und ohne Secret-Leaks protokolliert.
 12. Rechte, CSRF, Validierung und SSRF-Schutz sind geprüft.
 13. Der reale System-Cronjob wurde im Video eingerichtet und erfolgreich nachgewiesen.

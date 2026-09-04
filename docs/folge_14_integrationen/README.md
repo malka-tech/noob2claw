@@ -35,9 +35,9 @@ Als erste Integration wird [Open-Meteo](https://open-meteo.com/en/docs) angebund
 - Open-Meteo-Integration mit Standort- und Wetterkonfiguration
 - Wahl zwischen kostenfreier und kommerzieller Open-Meteo-Nutzung einschließlich Attribution
 - stündliche Wetterabholung und Speicherung des letzten gültigen Ergebnisses
-- allgemeiner Integrations-Cronjob als zentraler Dispatcher
+- erster zentraler Noob2Claw-Cronjob mit Integrations-Dispatcher
 - geschützte manuelle Ausführung und nachvollziehbare Logs
-- Einrichtung des System-Cronjobs im Video
+- manuelle Prüfung und reale Einrichtung des System-Cronjobs im Video
 
 ---
 
