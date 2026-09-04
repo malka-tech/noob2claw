@@ -436,9 +436,11 @@ Integrations-Dispatcher an. Fachlogik bleibt in den zentralen Funktionen unter
 
 Der Einstieg lehnt HTTP-Aufrufe ab, lädt den vorhandenen Bootstrap, erwirbt eine
 globale atomare Sperre, liefert definierte Exit-Codes und protokolliert ohne
-Secrets. Ein optionales Betriebssystem-`flock` ergänzt diese Sperre, ersetzt sie
-aber nicht. Spätere Folgen erweitern denselben Einstieg um neue Aufgaben, statt
-weitere Cron-Dateien oder Scheduler zu schaffen.
+Secrets. Die Parallelität wird vollständig durch die globale atomare
+Anwendungssperre und die Eintrag-Claims mit TTL kontrolliert. Ein zusätzlicher
+Betriebssystem-Wrapper ist nicht Bestandteil dieser Folge. Spätere Folgen
+erweitern denselben Einstieg um neue Aufgaben, statt weitere Cron-Dateien oder
+Scheduler zu schaffen.
 
 Ein Eintrag ist fällig, wenn er und sein Cronjob aktiv sind, die Klasse vorhanden ist, sie Cronjobs unterstützt, der nächste Lauf erreicht wurde und keine gültige Sperre besteht.
 

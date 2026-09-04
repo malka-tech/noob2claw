@@ -26,13 +26,16 @@ Betriebsdaten:  /var/www/noobclaw/var
 Diese Werte müssen auf dem Zielsystem geprüft und bei Abweichungen in allen
 Befehlen konsistent ersetzt werden.
 
+`cron.php` liegt direkt im Projektstamm. Der Pfad enthält bewusst keinen
+Unterordner `/public/`. Die Datei ist trotzdem ausschließlich per PHP-CLI
+ausführbar und lehnt HTTP-Aufrufe ab.
+
 ---
 
 # 2. Voraussetzungen prüfen
 
 ```bash
 command -v php
-command -v flock
 php -v
 systemctl is-active cron
 ls -l /var/www/noobclaw/cron.php
@@ -72,7 +75,7 @@ echo $?
 
 ---
 
-# 4. Lock- und Logverzeichnis vorbereiten
+# 4. Betriebs- und Logverzeichnis vorbereiten
 
 ```bash
 sudo install -d \
@@ -125,26 +128,7 @@ Danach in Noob2Claw prüfen:
 
 ---
 
-# 6. Betriebssystem-Sperre testen
-
-Zusätzlich zu den atomaren Anwendungssperren verhindert `flock` parallele
-Prozessstarts:
-
-```bash
-sudo -u www-data \
-  /usr/bin/flock -n \
-  /var/www/noobclaw/var/noob2claw-cron.lock \
-  /usr/bin/php \
-  /var/www/noobclaw/cron.php \
-  integrationen
-```
-
-`flock` ist nur eine zusätzliche Schutzschicht. Globale Dispatcher-Sperre,
-atomare Eintrag-Claims und TTLs innerhalb der Anwendung bleiben Pflicht.
-
----
-
-# 7. Vorhandene Crontab prüfen
+# 6. Vorhandene Crontab prüfen
 
 ```bash
 sudo crontab -u www-data -l
@@ -156,7 +140,7 @@ Noob2Claw-Eintrag vorhanden ist.
 
 ---
 
-# 8. Cronjob produktiv einrichten
+# 7. Cronjob produktiv einrichten
 
 Crontab des Dienstbenutzers öffnen:
 
@@ -168,7 +152,7 @@ Folgenden Block eintragen:
 
 ```cron
 # Noob2Claw – zentraler Integrations-Dispatcher
-* * * * * /usr/bin/flock -n /var/www/noobclaw/var/noob2claw-cron.lock /usr/bin/php /var/www/noobclaw/cron.php integrationen >> /var/www/noobclaw/var/noob2claw-cron.log 2>&1
+* * * * * /usr/bin/php /var/www/noobclaw/cron.php integrationen >> /var/www/noobclaw/var/noob2claw-cron.log 2>&1
 ```
 
 Anschließend den gespeicherten Eintrag kontrollieren:
@@ -183,7 +167,7 @@ nicht erforderlich. Maßgeblich ist das Verhalten des Zielsystems.
 
 ---
 
-# 9. Automatischen Lauf nachweisen
+# 8. Automatischen Lauf nachweisen
 
 Nach mindestens einem Minutenwechsel das Ausgabelog prüfen:
 
@@ -212,7 +196,7 @@ Der automatische Nachweis ist erfolgreich, wenn:
 
 ---
 
-# 10. Fehlerisolierung prüfen
+# 9. Fehlerisolierung prüfen
 
 Für einen kontrollierten Test können zwei Open-Meteo-Einträge verwendet werden:
 
@@ -228,7 +212,7 @@ Ein Fachfehler darf andere fällige Integrationseinträge nicht blockieren.
 
 ---
 
-# 11. Häufige Fehler
+# 10. Häufige Fehler
 
 ## `cron.php` wurde nicht gefunden
 
@@ -261,7 +245,6 @@ Schreibrechte die Ursache.
 ## Lauf startet doppelt
 
 - Crontab auf doppelte Einträge prüfen.
-- `flock`-Pfad und Berechtigungen prüfen.
 - globale Anwendungssperre und atomare Eintrag-Claims prüfen.
 - kontrollierten Umgang mit abgelaufenen Sperren testen.
 
@@ -274,7 +257,7 @@ Schreibrechte die Ursache.
 
 ---
 
-# 12. Cronlog begrenzen
+# 11. Cronlog begrenzen
 
 Vor dem produktiven Dauerbetrieb muss außerdem eine vorhandene zentrale
 Logrotation beziehungsweise Logbegrenzung auf
@@ -286,7 +269,7 @@ zusätzlich strukturiert in der Datenbank protokolliert.
 
 ---
 
-# 13. Cronjob deaktivieren oder entfernen
+# 12. Cronjob deaktivieren oder entfernen
 
 Crontab öffnen:
 
@@ -307,18 +290,18 @@ Das Entfernen der Crontab-Zeile löscht keine Integrationsdaten oder Laufprotoko
 
 ---
 
-# 14. Abnahme
+# 13. Abnahme
 
 Der Cronjob gilt erst als vollständig eingerichtet, wenn:
 
 - der Cron-Dienst aktiv ist,
 - `cron.php integrationen` als Dienstbenutzer erfolgreich läuft,
-- Lock- und Logpfad beschreibbar sind,
+- Betriebs- und Logpfad beschreibbar sind,
 - parallele Läufe verhindert werden,
 - die Crontab genau einen kommentierten Noob2Claw-Eintrag enthält,
 - ein echter automatischer Lauf nachgewiesen wurde,
 - Fälligkeit, Fehlerisolierung und nächster Lauf korrekt funktionieren,
 - Oberfläche und Logs keine Secrets offenlegen,
 - das Cron-Ausgabelog rotiert oder anderweitig wirksam begrenzt wird,
-- der finale Benutzer, PHP-Pfad, Projektpfad, Lockpfad, Logpfad und Crontab-Eintrag
+- der finale Benutzer, PHP-Pfad, Projektpfad, Logpfad und Crontab-Eintrag
   im Abschlussbericht dokumentiert sind.

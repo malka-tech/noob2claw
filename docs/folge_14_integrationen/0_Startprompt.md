@@ -113,6 +113,8 @@ zweiten Scheduler daneben zu bauen.
 Der neue Einstieg:
 
 - ist ausschließlich für PHP-CLI vorgesehen und lehnt Webaufrufe ab,
+- liegt direkt als `/var/www/noobclaw/cron.php` im Projektstamm und nicht in
+  einem Unterordner `/public/`,
 - lädt denselben Bootstrap und dieselbe Business-Logik wie die Anwendung,
 - akzeptiert eine feste Allowlist von Aufgaben, zunächst `integrationen`,
 - besitzt eine globale atomare Sperre mit kontrollierter Ablaufzeit,
@@ -290,7 +292,8 @@ fehlgeschlagener Einträge.
 
 Open-Meteo wird höchstens einmal pro Stunde fällig. Der System-Cronjob darf den Dispatcher jede Minute starten; die Fälligkeitsprüfung entscheidet über die Ausführung.
 
-Implementiere den zentralen Einstieg im Webroot als `cron.php`. Der Aufruf
+Implementiere den zentralen Einstieg direkt im Projektwurzelverzeichnis als
+`/var/www/noobclaw/cron.php`, ohne Unterordner `/public/`. Der Aufruf
 `php cron.php integrationen` startet genau den Integrations-Dispatcher. Unbekannte
 Aufgaben, Webaufrufe, fehlgeschlagener Bootstrap und Datenbankfehler enden mit
 einem sicheren Fehler und einem Exit-Code ungleich `0`. Kontrollierte Fehler
@@ -309,15 +312,15 @@ Cron gestarteter Lauf nachgewiesen wurde.
 Ermittle den korrekten realen Aufruf der neu erstellten `cron.php`. Bevorzuge
 PHP-CLI, absolute Pfade und den tatsächlichen Webserver-Benutzer. Übernimm den
 vollständigen geprüften Crontab-Eintrag aus der Einrichtungsanleitung. Passe
-Benutzer, Projekt-, Lock- und Logpfad an das Zielsystem an. Die atomare
-Anwendungssperre bleibt trotz `flock` Pflicht.
+Benutzer, Projekt- und Logpfad an das Zielsystem an. Die Doppelstart-Sicherung
+erfolgt ausschließlich über die atomaren Anwendungssperren.
 
 Im Video:
 
 1. PHP-Pfad und korrekten Betriebssystembenutzer ermitteln.
 2. Befehl zunächst manuell ausführen.
 3. Exit-Code und Anwendungslog prüfen.
-4. Schreibrechte auf Projekt-, Lock- und Logpfad unter diesem Benutzer prüfen.
+4. Schreibrechte auf Projekt- und Logpfad unter diesem Benutzer prüfen.
 5. mit `crontab -l` den bisherigen Zustand und doppelte Einträge prüfen.
 6. Crontab des richtigen Benutzers öffnen.
 7. Eintrag mit eindeutigem Kommentar und absoluten Pfaden anlegen.
