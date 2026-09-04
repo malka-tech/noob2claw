@@ -45,6 +45,7 @@ Als erste Integration wird [Open-Meteo](https://open-meteo.com/en/docs) angebund
 
 - `0_Startprompt.md` – vollständiger Arbeitsauftrag für den KI-Agenten
 - `1_Integrationsverwaltung.md` – Architektur, Datenmodell, Klassenvertrag, Oberfläche, Open-Meteo, Cronjob, Sicherheit und Tests
+- `2_Cronjob_Einrichtung.md` – vollständige Debian-Anleitung zur produktiven Einrichtung und Prüfung des zentralen Cronjobs
 
 ---
 

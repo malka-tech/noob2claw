@@ -425,6 +425,9 @@ Ohne gültigen Standard entsteht ein klarer fachlicher Fehler. Es wird nicht der
 
 # 9. Cronjob-Architektur
 
+Die konkrete Installation, Inbetriebnahme, Verifikation und Fehlerbehebung ist in
+`docs/folge_14_integrationen/2_Cronjob_Einrichtung.md` verbindlich beschrieben.
+
 Die Folgen 9 bis 13 liefern noch keinen zentralen Anwendungsscheduler. Folge 14
 führt deshalb erstmals einen zentralen PHP-CLI-Einstieg `cron.php` ein. Dieser
 kennt nur erlaubte Aufgabenschlüssel und stößt mit `integrationen` den

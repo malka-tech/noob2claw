@@ -45,7 +45,8 @@ Aktualisiere die Vorlage vorsichtig auf `origin/main`. Bewahre vorhandene lokale
 
 - sämtliche Markdown-Dateien unter `docs/folge_9_framework/`,
 - die relevanten Dokumentationen der Folgen 10 bis 13,
-- `docs/folge_14_integrationen/1_Integrationsverwaltung.md` als primäre Aufgabenbeschreibung.
+- `docs/folge_14_integrationen/1_Integrationsverwaltung.md` als primäre Aufgabenbeschreibung,
+- `docs/folge_14_integrationen/2_Cronjob_Einrichtung.md` für die reale Inbetriebnahme.
 
 Verbindlich bleiben insbesondere Architektur, Verzeichnisstruktur, Navigation, Einstellungen, Rechte, Datenbank, Formulare, Tabellen, Sicherheit, API, MCP und Logging.
 
@@ -300,23 +301,16 @@ Bearbeitung anderer fälliger Einträge nicht.
 
 # 10. Ersten Cronjob im Video einrichten
 
+Führe die Einrichtung vollständig nach
+`docs/folge_14_integrationen/2_Cronjob_Einrichtung.md` durch. Die Folge ist erst
+abgeschlossen, wenn neben dem manuellen Test auch ein echter automatisch durch
+Cron gestarteter Lauf nachgewiesen wurde.
+
 Ermittle den korrekten realen Aufruf der neu erstellten `cron.php`. Bevorzuge
-PHP-CLI, absolute Pfade und den tatsächlichen Webserver-Benutzer. Beispielhaft,
-nicht blind übernehmen:
-
-```cron
-* * * * * /usr/bin/php /var/www/noobclaw/cron.php integrations >> /var/log/noob2claw-integrationen-cron.log 2>&1
-```
-
-Nutze `flock` auch auf Betriebssystemebene als zusätzliche Schutzschicht, sofern
-es auf dem Zielsystem verfügbar ist. Beispiel:
-
-```cron
-* * * * * /usr/bin/flock -n /run/lock/noob2claw-cron.lock /usr/bin/php /var/www/noobclaw/cron.php integrationen >> /var/log/noob2claw-integrationen-cron.log 2>&1
-```
-
-Passe Lock- und Logpfad an die Schreibrechte des ausführenden Benutzers an. Die
-atomare Anwendungssperre bleibt trotzdem Pflicht; `flock` ersetzt sie nicht.
+PHP-CLI, absolute Pfade und den tatsächlichen Webserver-Benutzer. Übernimm den
+vollständigen geprüften Crontab-Eintrag aus der Einrichtungsanleitung. Passe
+Benutzer, Projekt-, Lock- und Logpfad an das Zielsystem an. Die atomare
+Anwendungssperre bleibt trotz `flock` Pflicht.
 
 Im Video:
 
