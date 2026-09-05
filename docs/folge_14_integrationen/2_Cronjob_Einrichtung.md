@@ -167,7 +167,9 @@ Danach in Noob2Claw prüfen:
 - geprüfte, ausgeführte, übersprungene und fehlgeschlagene Einträge,
 - letzten Versuch und letzten Erfolg des Open-Meteo-Eintrags,
 - nächsten geplanten Lauf,
-- gespeicherte Wetterdaten.
+- gespeicherte Wetterdaten,
+- Wetteranzeige oben rechts im Header aus dem aktiven globalen Wetter-Standard,
+  einschließlich Standort, Temperatur, Einheit, Aktualität und Attribution.
 
 ---
 

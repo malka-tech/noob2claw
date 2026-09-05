@@ -423,7 +423,48 @@ Ohne gültigen Standard entsteht ein klarer fachlicher Fehler. Es wird nicht der
 
 ---
 
-# 9. Cronjob-Architektur
+# 9. Wetteranzeige im globalen Header
+
+Der vorhandene globale Header zeigt oben rechts ein kompaktes Wetterelement. Die
+Anzeige wird ausschließlich aus dem aktiven globalen Standard der Fähigkeit
+`wetter` gespeist und verwendet das zuletzt erfolgreich gespeicherte,
+normalisierte Ergebnis. Sie darf Open-Meteo nicht bei jedem Seitenaufruf direkt
+kontaktieren.
+
+Kompakte Pflichtangaben:
+
+- lokal zugeordneter Wetterzustand beziehungsweise Wettersymbol,
+- aktuelle Temperatur,
+- konfigurierte Temperatureinheit.
+
+Eine zugängliche Detailanzeige nennt zusätzlich Standortbezeichnung,
+Messzeitpunkt, Aktualitätsstatus und die erforderliche Attribution zu Open-Meteo.
+Die Wettercode-Zuordnung zu lokalen Symbolen und deutschen Texten erfolgt zentral
+und anhand einer Allowlist. Extern gelieferte Markup- oder Icon-URLs werden nicht
+gerendert. Sämtliche dynamischen Texte werden escaped.
+
+Zustände:
+
+- **aktuell:** normales Wetterelement mit letztem Messzeitpunkt,
+- **veraltet:** letztes gültiges Ergebnis bleibt sichtbar und wird eindeutig als
+  veraltet gekennzeichnet,
+- **nicht verfügbar:** neutraler Zustand oder kontrolliert ausgeblendetes Element,
+  wenn kein Standard, kein aktiver Eintrag oder noch kein gültiges Ergebnis
+  vorhanden ist.
+
+Es gibt keinen Fallback auf einen beliebigen anderen Wettereintrag. Änderungen am
+globalen Wetter-Standard werden beim nächsten Seitenaufbau berücksichtigt. Die
+aufgelösten Daten werden dem Header vor dem Rendern über eine zentrale
+Servicefunktion übergeben; das Header-Template selbst enthält keine Datenbank-,
+Integrations- oder API-Geschäftslogik. Die
+Darstellung verwendet die bestehenden Header- und Responsive-Komponenten, bleibt
+per Tastatur erreichbar, besitzt verständliche ARIA-Texte und darf auf kleinen
+Bildschirmen keine wesentlichen Navigations- oder Benutzeraktionen verdrängen.
+API-Keys, Konfigurations-Secrets und Rohantworten gelangen niemals in den Browser.
+
+---
+
+# 10. Cronjob-Architektur
 
 Die konkrete Installation, Inbetriebnahme, Verifikation und Fehlerbehebung ist in
 `docs/folge_14_integrationen/2_Cronjob_Einrichtung.md` verbindlich beschrieben.
@@ -486,7 +527,7 @@ haben Vorrang.
 
 ---
 
-# 10. Rechte, Sicherheit und Audit
+# 11. Rechte, Sicherheit und Audit
 
 Alle schreibenden Aktionen benötigen ein passendes Recht und CSRF-Schutz. Protokolliert werden unter anderem Änderungen von Einträgen und Standards, Aktivstatus, Verbindungstests, manuelle Abrufe und Cronläufe – jedoch nie Secret-Werte.
 
@@ -505,7 +546,7 @@ Verbindlich:
 
 ---
 
-# 11. Nicht erlaubt
+# 12. Nicht erlaubt
 
 - separate Open-Meteo-Verwaltung außerhalb des Integrationssystems,
 - nur ein fest verdrahteter Eintrag pro Klasse,
@@ -516,11 +557,12 @@ Verbindlich:
 - Secrets in HTML, Logs, Exceptions, URLs oder Cronzeilen,
 - Überschreiben gültiger Wetterdaten durch Fehlerantworten,
 - stiller Fallback auf eine nicht gewählte Standardintegration,
+- direkter Open-Meteo-Aufruf aus dem Browser oder bei jedem Seitenaufruf,
 - ein einzelner Fehler, der den ganzen Dispatcher beendet.
 
 ---
 
-# 12. Abnahmekriterien
+# 13. Abnahmekriterien
 
 1. Integrationen werden zentral im Einstellungsbereich verwaltet.
 2. Klassen stammen aus einer sicheren Registry und erfüllen den Vertrag.
@@ -531,7 +573,11 @@ Verbindlich:
 7. Open-Meteo liefert normalisierte Wetterdaten für mehrere Standorte.
 8. Nutzungsmodus, Kunden-API-Key und Attribution werden korrekt und sicher behandelt.
 9. Letzte gültige Daten bleiben bei Fehlern erhalten.
-10. Der in Folge 14 geschaffene zentrale Cronjob ruft fällige Integrationsjobs ohne Doppelverarbeitung auf.
-11. Fehler werden je Eintrag isoliert und ohne Secret-Leaks protokolliert.
-12. Rechte, CSRF, Validierung und SSRF-Schutz sind geprüft.
-13. Der reale System-Cronjob wurde im Video eingerichtet und erfolgreich nachgewiesen.
+10. Oben rechts im Header erscheint das Wetter des aktiven globalen Wetter-Standards mit Temperatur, Einheit, Zustand, Aktualität und Attribution.
+11. Fehlende, deaktivierte oder veraltete Wetterdaten werden ohne stillen Fallback korrekt dargestellt.
+12. Ein Wechsel des globalen Wetter-Standards aktualisiert die Header-Ausgabe beim nächsten Seitenaufbau.
+13. Normale Seitenaufrufe erzeugen keinen externen Wetter-API-Aufruf und geben keine Secrets oder Rohantworten an den Browser aus.
+14. Der in Folge 14 geschaffene zentrale Cronjob ruft fällige Integrationsjobs ohne Doppelverarbeitung auf.
+15. Fehler werden je Eintrag isoliert und ohne Secret-Leaks protokolliert.
+16. Rechte, CSRF, Validierung und SSRF-Schutz sind geprüft.
+17. Der reale System-Cronjob wurde im Video eingerichtet und erfolgreich nachgewiesen.

@@ -35,6 +35,7 @@ Als erste Integration wird [Open-Meteo](https://open-meteo.com/en/docs) angebund
 - Open-Meteo-Integration mit Standort- und Wetterkonfiguration
 - Wahl zwischen kostenfreier und kommerzieller Open-Meteo-Nutzung einschließlich Attribution
 - stündliche Wetterabholung und Speicherung des letzten gültigen Ergebnisses
+- aktuelle Wetteranzeige oben rechts im Header aus dem aktiven globalen Wetter-Standard
 - erster zentraler Noob2Claw-Cronjob mit Integrations-Dispatcher
 - geschützte manuelle Ausführung und nachvollziehbare Logs
 - manuelle Prüfung und reale Einrichtung des System-Cronjobs im Video
@@ -73,4 +74,4 @@ zentraler Integrations-Dispatcher
 
 # Ergebnis
 
-Nach dieser Folge besitzt Noob2Claw eine zentrale Grundlage für beliebig viele externe Dienste. Mehrere Server, Konten oder Standorte derselben Integration können getrennt verwaltet werden. Das Gesamtsystem kann je Fähigkeit einen konkreten Standard-Eintrag festlegen.
+Nach dieser Folge besitzt Noob2Claw eine zentrale Grundlage für beliebig viele externe Dienste. Mehrere Server, Konten oder Standorte derselben Integration können getrennt verwaltet werden. Das Gesamtsystem kann je Fähigkeit einen konkreten Standard-Eintrag festlegen. Das zuletzt erfolgreich abgerufene Wetter des aktiven globalen Wetter-Standards wird oben rechts im Header angezeigt und bei fehlenden oder veralteten Daten eindeutig gekennzeichnet.

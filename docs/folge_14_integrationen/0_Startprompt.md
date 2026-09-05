@@ -251,7 +251,48 @@ Speichere normalisierte Wetterfelder und, sofern sinnvoll, eine größenbegrenzt
 
 ---
 
-# 9. Integrations-Cronjob
+# 9. Wetteranzeige im Header
+
+Erweitere den bestehenden globalen Header. Oben rechts wird auf allen geeigneten
+angemeldeten Seiten das aktuelle Wetter aus dem als globaler Standard für die
+Fähigkeit `wetter` gewählten aktiven Integrationseintrag angezeigt.
+
+Verbindlicher Ablauf:
+
+1. globalen Standard für `wetter` über die zentrale Fähigkeitsauflösung laden,
+2. prüfen, dass Eintrag und Integration aktiv sind,
+3. das zuletzt erfolgreich gespeicherte normalisierte Wetterergebnis verwenden,
+4. mindestens Wetterzustand beziehungsweise passendes Symbol und Temperatur mit
+   konfigurierter Einheit anzeigen,
+5. Standortbezeichnung, Messzeitpunkt, Aktualitätsstatus und Quelle Open-Meteo
+   in einer zugänglichen Detailanzeige, etwa Tooltip oder aufklappbarem Element,
+   sichtbar machen.
+
+Der Header löst keinen externen API-Aufruf pro Seitenaufruf aus. Die Anzeige
+verwendet die durch manuellen Abruf oder Cronjob gespeicherten Daten. Der Browser
+erhält weder API-Key noch Rohantwort. Alle Inhalte werden serverseitig sicher
+aufgelöst und bei der Ausgabe escaped. Die Daten werden vor dem Rendern über eine
+zentrale Servicefunktion bereitgestellt; das Header-Template enthält weder
+Datenbankabfragen noch Integrations- oder API-Geschäftslogik.
+
+Ist kein Wetter-Standard gewählt, ist der gewählte Eintrag deaktiviert oder liegt
+noch kein erfolgreicher Abruf vor, zeigt der Header einen neutralen Zustand wie
+„Wetter nicht verfügbar“ oder blendet das kompakte Wetterelement kontrolliert
+aus. Es gibt keinen stillen Fallback auf einen anderen Eintrag. Ist das letzte
+gültige Ergebnis älter als das erlaubte Aktualitätsfenster, darf es weiterhin
+angezeigt werden, muss aber gut erkennbar als „veraltet“ markiert sein.
+
+Die Darstellung nutzt die bestehenden Header-, Icon-, Farb- und
+Responsive-Komponenten. Sie darf Navigation und Benutzeraktionen auf kleinen
+Bildschirmen nicht verdrängen, ist per Tastatur erreichbar und besitzt
+verständliche Alternativ- beziehungsweise ARIA-Texte. Wettercodes werden zentral
+auf eine begrenzte Liste lokaler Symbole und verständlicher deutscher Texte
+abgebildet; von der API gelieferte HTML-, Bild- oder Icon-URLs werden nicht
+ungeprüft ausgegeben.
+
+---
+
+# 10. Integrations-Cronjob
 
 ```text
 zentraler Cron-Aufruf
@@ -302,7 +343,7 @@ Bearbeitung anderer fälliger Einträge nicht.
 
 ---
 
-# 10. Ersten Cronjob im Video einrichten
+# 11. Ersten Cronjob im Video einrichten
 
 Führe die Einrichtung vollständig nach
 `docs/folge_14_integrationen/2_Cronjob_Einrichtung.md` durch. Die Folge ist erst
@@ -338,7 +379,7 @@ Der finale tatsächlich verwendete Cron-Eintrag gehört in den Abschlussbericht.
 
 ---
 
-# 11. Sicherheit und Rechte
+# 12. Sicherheit und Rechte
 
 Nutze vorhandene Rechte oder ergänze idempotent sinngemäß:
 
@@ -358,7 +399,7 @@ Verbindlich sind CSRF-Schutz, serverseitige Validierung, parametrisierte SQL-Abf
 
 ---
 
-# 12. Tests
+# 13. Tests
 
 Teste mindestens:
 
@@ -369,6 +410,12 @@ Teste mindestens:
 - normalisierte Ausgabe von `hole_wetter()`,
 - manuelle Speicherung der Wetterdaten,
 - Erhalt letzter gültiger Daten bei Fehlern,
+- Header-Ausgabe aus dem gewählten aktiven Wetter-Standard,
+- Aktualisierung der Header-Ausgabe nach einem Wechsel des Wetter-Standards,
+- Header-Zustände für fehlende, deaktivierte und veraltete Wetterdaten,
+- responsive, tastaturbedienbare Wetteranzeige mit sicherer Ausgabe und Attribution,
+- Ausgabe-Escaping für manipulierte Standort- und Wettertexte,
+- keinen externen Wetter-API-Aufruf bei normalen Seitenaufrufen,
 - gültige Standardauswahl nur aus passenden aktiven Einträgen,
 - sichere Behandlung deaktivierter Standards,
 - fälligen und nicht fälligen Cron-Eintrag,
@@ -386,7 +433,7 @@ Teste mindestens:
 
 ---
 
-# 13. Abschlussbericht
+# 14. Abschlussbericht
 
 Dokumentiere:
 
@@ -396,10 +443,11 @@ Dokumentiere:
 - Klassenvertrag und Registry,
 - Fähigkeiten und Standardauflösung,
 - Open-Meteo-Konfiguration und Rückgabeformat,
+- Header-Wetteranzeige einschließlich Aktualitäts- und Fehlerzuständen,
 - Cronjob-Ablauf, Sperren und Fehlerbehandlung,
 - finalen Crontab-Eintrag,
 - Rechte,
 - Tests und Ergebnisse,
 - bekannte Einschränkungen.
 
-Die Aufgabe ist erst abgeschlossen, wenn Integrationsverwaltung, Open-Meteo, globale Standardauswahl und zentraler Integrations-Cronjob gemeinsam funktionieren und der reale Cronjob auf dem Server eingerichtet und getestet wurde.
+Die Aufgabe ist erst abgeschlossen, wenn Integrationsverwaltung, Open-Meteo, globale Standardauswahl, Wetteranzeige oben rechts im Header und zentraler Integrations-Cronjob gemeinsam funktionieren und der reale Cronjob auf dem Server eingerichtet und getestet wurde.
