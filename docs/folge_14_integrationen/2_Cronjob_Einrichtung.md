@@ -55,7 +55,7 @@ In `crontab -e` genau einmal einfügen:
 
 ```cron
 # Noob2Claw – zentraler Integrations-Dispatcher
-* * * * * umask 027; /usr/bin/php /var/www/noobclaw/cron.php integrationen >> /var/www/noobclaw/var/noob2claw-cron.log 2>&1
+* * * * * /usr/bin/php /var/www/noobclaw/cron.php integrationen >> /var/www/noobclaw/var/noob2claw-cron.log 2>&1
 ```
 
 Danach:
@@ -197,7 +197,7 @@ Folgenden Block eintragen:
 
 ```cron
 # Noob2Claw – zentraler Integrations-Dispatcher
-* * * * * umask 027; /usr/bin/php /var/www/noobclaw/cron.php integrationen >> /var/www/noobclaw/var/noob2claw-cron.log 2>&1
+* * * * * /usr/bin/php /var/www/noobclaw/cron.php integrationen >> /var/www/noobclaw/var/noob2claw-cron.log 2>&1
 ```
 
 Anschließend den gespeicherten Eintrag kontrollieren:
