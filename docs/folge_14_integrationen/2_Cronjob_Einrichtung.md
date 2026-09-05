@@ -20,7 +20,7 @@ Projekt:        /var/www/noobclaw
 Cron-Einstieg:  /var/www/noobclaw/cron.php
 PHP:            /usr/bin/php
 Dienstbenutzer: noobclaw
-Betriebsdaten:  /var/www/noobclaw/var
+Cron-Log:       /home/noobclaw/var/noob2claw-cron.log
 ```
 
 Diese Werte müssen auf dem Zielsystem geprüft und bei Abweichungen in allen
@@ -41,10 +41,10 @@ php -v
 systemctl is-active cron
 ls -l /var/www/noobclaw/cron.php
 test -r /var/www/noobclaw/cron.php && echo 'OK: cron.php lesbar' || echo 'FEHLER: cron.php nicht lesbar'
-install -d -m 0750 /var/www/noobclaw/var
-touch /var/www/noobclaw/var/noob2claw-cron.log
-chmod 0640 /var/www/noobclaw/var/noob2claw-cron.log
-test -w /var/www/noobclaw/var/noob2claw-cron.log && echo 'OK: Log beschreibbar' || echo 'FEHLER: Log nicht beschreibbar'
+install -d -m 0750 /home/noobclaw/var
+touch /home/noobclaw/var/noob2claw-cron.log
+chmod 0640 /home/noobclaw/var/noob2claw-cron.log
+test -w /home/noobclaw/var/noob2claw-cron.log && echo 'OK: Log beschreibbar' || echo 'FEHLER: Log nicht beschreibbar'
 /usr/bin/php /var/www/noobclaw/cron.php integrationen
 echo "Exit-Code: $?"
 crontab -l
@@ -55,7 +55,7 @@ In `crontab -e` genau einmal einfügen:
 
 ```cron
 # Noob2Claw – zentraler Integrations-Dispatcher
-* * * * * /usr/bin/php /var/www/noobclaw/cron.php integrationen >> /var/www/noobclaw/var/noob2claw-cron.log 2>&1
+* * * * * /usr/bin/php /var/www/noobclaw/cron.php integrationen >> /home/noobclaw/var/noob2claw-cron.log 2>&1
 ```
 
 Danach:
@@ -67,7 +67,7 @@ crontab -l
 Mindestens einen Minutenwechsel abwarten und anschließend prüfen:
 
 ```bash
-tail -n 50 /var/www/noobclaw/var/noob2claw-cron.log
+tail -n 50 /home/noobclaw/var/noob2claw-cron.log
 ```
 
 Bei einem Fehler abbrechen und den passenden ausführlichen Abschnitt unten
@@ -121,18 +121,22 @@ echo $?
 
 ---
 
-# 4. Betriebs- und Logverzeichnis vorbereiten
+# 4. Benutzereigenes Logverzeichnis vorbereiten
+
+Das Cronlog liegt bewusst im beschreibbaren Benutzerverzeichnis und nicht unter
+dem möglicherweise einem anderen Dienstbenutzer gehörenden Projektpfad
+`/var/www/noobclaw`. Dafür sind weder `sudo` noch geänderte Projektrechte nötig.
 
 ```bash
-install -d -m 0750 /var/www/noobclaw/var
-touch /var/www/noobclaw/var/noob2claw-cron.log
-chmod 0640 /var/www/noobclaw/var/noob2claw-cron.log
+install -d -m 0750 /home/noobclaw/var
+touch /home/noobclaw/var/noob2claw-cron.log
+chmod 0640 /home/noobclaw/var/noob2claw-cron.log
 ```
 
 Schreibrecht prüfen:
 
 ```bash
-test -w /var/www/noobclaw/var
+test -w /home/noobclaw/var/noob2claw-cron.log
 echo $?
 ```
 
@@ -197,7 +201,7 @@ Folgenden Block eintragen:
 
 ```cron
 # Noob2Claw – zentraler Integrations-Dispatcher
-* * * * * /usr/bin/php /var/www/noobclaw/cron.php integrationen >> /var/www/noobclaw/var/noob2claw-cron.log 2>&1
+* * * * * /usr/bin/php /var/www/noobclaw/cron.php integrationen >> /home/noobclaw/var/noob2claw-cron.log 2>&1
 ```
 
 Anschließend den gespeicherten Eintrag kontrollieren:
@@ -217,7 +221,7 @@ nicht erforderlich. Maßgeblich ist das Verhalten des Zielsystems.
 Nach mindestens einem Minutenwechsel das Ausgabelog prüfen:
 
 ```bash
-tail -n 50 /var/www/noobclaw/var/noob2claw-cron.log
+tail -n 50 /home/noobclaw/var/noob2claw-cron.log
 ```
 
 Bei Bedarf zusätzlich:
@@ -283,7 +287,7 @@ Benutzer sowie Lese- und Schreibrechte prüfen:
 
 ```bash
 test -r /var/www/noobclaw/cron.php
-test -w /var/www/noobclaw/var
+test -w /home/noobclaw/var/noob2claw-cron.log
 ```
 
 ## Manueller Lauf funktioniert, automatischer Lauf nicht
@@ -316,7 +320,7 @@ Schreibrechte die Ursache.
 
 Vor dem produktiven Dauerbetrieb muss außerdem eine vorhandene zentrale
 anwendungsseitige Logbegrenzung auf
-`/var/www/noobclaw/var/noob2claw-cron.log` angewendet werden. Falls das Projekt
+`/home/noobclaw/var/noob2claw-cron.log` angewendet werden. Falls das Projekt
 noch keine zentrale Lösung besitzt, muss ein Administrator ergänzend eine
 `logrotate`-Regel mit begrenzter Zahl archivierter Dateien, Komprimierung und
 passenden Dateirechten einrichten. Dieser optionale Systemschritt kann durch
