@@ -20,7 +20,6 @@ Projekt:        /var/www/noobclaw
 Cron-Einstieg:  /var/www/noobclaw/cron.php
 PHP:            /usr/bin/php
 Dienstbenutzer: noobclaw
-Cron-Log:       /home/noobclaw/var/noob2claw-cron.log
 ```
 
 Diese Werte müssen auf dem Zielsystem geprüft und bei Abweichungen in allen
@@ -41,10 +40,6 @@ php -v
 systemctl is-active cron
 ls -l /var/www/noobclaw/cron.php
 test -r /var/www/noobclaw/cron.php && echo 'OK: cron.php lesbar' || echo 'FEHLER: cron.php nicht lesbar'
-install -d -m 0750 /home/noobclaw/var
-touch /home/noobclaw/var/noob2claw-cron.log
-chmod 0640 /home/noobclaw/var/noob2claw-cron.log
-test -w /home/noobclaw/var/noob2claw-cron.log && echo 'OK: Log beschreibbar' || echo 'FEHLER: Log nicht beschreibbar'
 /usr/bin/php /var/www/noobclaw/cron.php integrationen
 echo "Exit-Code: $?"
 crontab -l
@@ -55,7 +50,7 @@ In `crontab -e` genau einmal einfügen:
 
 ```cron
 # Noob2Claw – zentraler Integrations-Dispatcher
-* * * * * /usr/bin/php /var/www/noobclaw/cron.php integrationen >> /home/noobclaw/var/noob2claw-cron.log 2>&1
+* * * * * /usr/bin/php /var/www/noobclaw/cron.php integrationen
 ```
 
 Danach:
@@ -67,7 +62,8 @@ crontab -l
 Mindestens einen Minutenwechsel abwarten und anschließend prüfen:
 
 ```bash
-tail -n 50 /home/noobclaw/var/noob2claw-cron.log
+systemctl status cron --no-pager
+journalctl -u cron --since '10 minutes ago' --no-pager
 ```
 
 Bei einem Fehler abbrechen und den passenden ausführlichen Abschnitt unten
@@ -121,27 +117,15 @@ echo $?
 
 ---
 
-# 4. Benutzereigenes Logverzeichnis vorbereiten
+# 4. Protokollierung ohne separate Logdatei
 
-Das Cronlog liegt bewusst im beschreibbaren Benutzerverzeichnis und nicht unter
-dem möglicherweise einem anderen Dienstbenutzer gehörenden Projektpfad
-`/var/www/noobclaw`. Dafür sind weder `sudo` noch geänderte Projektrechte nötig.
+Für den Cronjob wird keine zusätzliche Ausgabelogdatei eingerichtet. Der
+Dispatcher speichert Status, Dauer, Zählerstände und bereinigte Fehlermeldungen
+als strukturierte Anwendungsläufe in Noob2Claw. Der Betriebssystemstart wird bei
+Bedarf über den Cron-Dienst beziehungsweise dessen Journal geprüft.
 
-```bash
-install -d -m 0750 /home/noobclaw/var
-touch /home/noobclaw/var/noob2claw-cron.log
-chmod 0640 /home/noobclaw/var/noob2claw-cron.log
-```
-
-Schreibrecht prüfen:
-
-```bash
-test -w /home/noobclaw/var/noob2claw-cron.log
-echo $?
-```
-
-In Logs dürfen niemals API-Schlüssel, Tokens, Authorization-Header oder
-vollständige sensitive Anbieterantworten erscheinen.
+Die Anwendung darf niemals API-Schlüssel, Tokens, Authorization-Header oder
+vollständige sensitive Anbieterantworten protokollieren.
 
 ---
 
@@ -201,7 +185,7 @@ Folgenden Block eintragen:
 
 ```cron
 # Noob2Claw – zentraler Integrations-Dispatcher
-* * * * * /usr/bin/php /var/www/noobclaw/cron.php integrationen >> /home/noobclaw/var/noob2claw-cron.log 2>&1
+* * * * * /usr/bin/php /var/www/noobclaw/cron.php integrationen
 ```
 
 Anschließend den gespeicherten Eintrag kontrollieren:
@@ -218,13 +202,7 @@ nicht erforderlich. Maßgeblich ist das Verhalten des Zielsystems.
 
 # 8. Automatischen Lauf nachweisen
 
-Nach mindestens einem Minutenwechsel das Ausgabelog prüfen:
-
-```bash
-tail -n 50 /home/noobclaw/var/noob2claw-cron.log
-```
-
-Bei Bedarf zusätzlich:
+Nach mindestens einem Minutenwechsel den Cron-Dienst prüfen:
 
 ```bash
 systemctl status cron --no-pager
@@ -253,7 +231,7 @@ Für einen kontrollierten Test können zwei Open-Meteo-Einträge verwendet werde
 2. einen zweiten Eintrag vorübergehend mit einem ungültigen Standort versehen,
 3. beide Einträge auf fällig setzen,
 4. den Dispatcher ausführen lassen,
-5. den Fehler des zweiten Eintrags im sicheren Log prüfen,
+5. den Fehler des zweiten Eintrags im bereinigten Anwendungslaufprotokoll prüfen,
 6. den erfolgreichen Lauf des ersten Eintrags nachweisen,
 7. die falsche Konfiguration anschließend korrigieren.
 
@@ -283,11 +261,10 @@ ls -l /var/www/noobclaw/cron.php
 
 ## `Permission denied`
 
-Benutzer sowie Lese- und Schreibrechte prüfen:
+Benutzer und Leserecht des Cron-Einstiegs prüfen:
 
 ```bash
 test -r /var/www/noobclaw/cron.php
-test -w /home/noobclaw/var/noob2claw-cron.log
 ```
 
 ## Manueller Lauf funktioniert, automatischer Lauf nicht
@@ -299,7 +276,7 @@ journalctl -u cron --since '10 minutes ago' --no-pager
 ```
 
 Besonders häufig sind ein falscher Benutzer, relative Pfade oder fehlende
-Schreibrechte die Ursache.
+Leserechte die Ursache.
 
 ## Lauf startet doppelt
 
@@ -307,26 +284,13 @@ Schreibrechte die Ursache.
 - globale Anwendungssperre und atomare Eintrag-Claims prüfen.
 - kontrollierten Umgang mit abgelaufenen Sperren testen.
 
-## Log bleibt leer
+# 11. Anwendungsprotokoll prüfen
 
-- absoluten PHP-Pfad prüfen,
-- Logverzeichnis und Schreibrechte prüfen,
-- Cron-Journal kontrollieren,
-- Befehl exakt als Benutzer `noobclaw` manuell ausführen.
-
----
-
-# 11. Cronlog begrenzen
-
-Vor dem produktiven Dauerbetrieb muss außerdem eine vorhandene zentrale
-anwendungsseitige Logbegrenzung auf
-`/home/noobclaw/var/noob2claw-cron.log` angewendet werden. Falls das Projekt
-noch keine zentrale Lösung besitzt, muss ein Administrator ergänzend eine
-`logrotate`-Regel mit begrenzter Zahl archivierter Dateien, Komprimierung und
-passenden Dateirechten einrichten. Dieser optionale Systemschritt kann durch
-`noobclaw` ohne Administratorrechte nicht vorgenommen werden. Das Cronlog darf
-nicht unbegrenzt wachsen. Anwendungsläufe bleiben zusätzlich strukturiert in der
-Datenbank protokolliert.
+Die Integrationsverwaltung muss Dispatcher- und Eintragsläufe strukturiert und
+mit begrenzter Aufbewahrung speichern. Kontrolliere dort Start, Ende, Dauer,
+Status, Exit-Code, Zählerstände und bereinigte Fehler. Eine separate Cron-
+Ausgabelogdatei und eine zusätzliche `logrotate`-Regel sind nicht Bestandteil
+dieser Einrichtung.
 
 ---
 
@@ -357,12 +321,11 @@ Der Cronjob gilt erst als vollständig eingerichtet, wenn:
 
 - der Cron-Dienst aktiv ist,
 - `cron.php integrationen` als Benutzer `noobclaw` erfolgreich läuft,
-- Betriebs- und Logpfad beschreibbar sind,
 - parallele Läufe verhindert werden,
 - die Crontab genau einen kommentierten Noob2Claw-Eintrag enthält,
 - ein echter automatischer Lauf nachgewiesen wurde,
 - Fälligkeit, Fehlerisolierung und nächster Lauf korrekt funktionieren,
-- Oberfläche und Logs keine Secrets offenlegen,
-- das Cron-Ausgabelog rotiert oder anderweitig wirksam begrenzt wird,
-- der finale Benutzer, PHP-Pfad, Projektpfad, Logpfad und Crontab-Eintrag
+- Oberfläche und Anwendungsprotokolle keine Secrets offenlegen,
+- die Aufbewahrung strukturierter Anwendungsläufe wirksam begrenzt ist,
+- der finale Benutzer, PHP-Pfad, Projektpfad und Crontab-Eintrag
   im Abschlussbericht dokumentiert sind.

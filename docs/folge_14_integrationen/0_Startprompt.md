@@ -355,27 +355,28 @@ PHP-CLI, absolute Pfade und standardmäßig die persönliche Crontab des bereits
 angemeldeten Benutzers `noobclaw`; hierfür sind weder `sudo` noch ein Wechsel zu
 `www-data` erforderlich. Übernimm den
 vollständigen geprüften Crontab-Eintrag aus der Einrichtungsanleitung. Passe
-Benutzer, Projekt- und Logpfad an das Zielsystem an. Die Doppelstart-Sicherung
+Benutzer und Projektpfad an das Zielsystem an. Eine separate Cron-Ausgabelogdatei
+wird nicht eingerichtet. Die Doppelstart-Sicherung
 erfolgt ausschließlich über die atomaren Anwendungssperren.
 
 Im Video:
 
 1. PHP-Pfad und korrekten Betriebssystembenutzer ermitteln.
 2. Befehl zunächst manuell ausführen.
-3. Exit-Code und Anwendungslog prüfen.
-4. Schreibrechte auf Projekt- und Logpfad unter diesem Benutzer prüfen.
+3. Exit-Code und strukturiertes Anwendungslaufprotokoll prüfen.
+4. Leserecht auf `cron.php` und benötigte Anwendungsschreibrechte unter diesem Benutzer prüfen.
 5. mit `crontab -l` den bisherigen Zustand und doppelte Einträge prüfen.
 6. Crontab des richtigen Benutzers öffnen.
 7. Eintrag mit eindeutigem Kommentar und absoluten Pfaden anlegen.
 8. mit `crontab -l` den exakt gespeicherten Eintrag kontrollieren.
-9. nach dem nächsten Lauf Cron- und Integrationslogs prüfen.
+9. nach dem nächsten Lauf Cron-Journal und Anwendungslaufprotokoll prüfen.
 10. letzten Versuch, letzten Erfolg und Wetterdaten in der Oberfläche kontrollieren.
 11. einen parallelen zweiten manuellen Start als gesperrt nachweisen,
 12. einen Fehlerfall zeigen und danach die korrekte Konfiguration wiederherstellen,
 13. einen Neustart des Cron-Dienstes nur durchführen, wenn das Zielsystem dies
     nach der Crontab-Änderung tatsächlich verlangt.
 
-Der finale tatsächlich verwendete Cron-Eintrag gehört in den Abschlussbericht. Keine Tokens oder Secrets in Kommandozeile, Crontab oder Logumleitung.
+Der finale tatsächlich verwendete Cron-Eintrag gehört in den Abschlussbericht. Keine Tokens oder Secrets in Kommandozeile oder Crontab.
 
 ---
 

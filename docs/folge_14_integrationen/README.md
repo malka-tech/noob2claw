@@ -37,7 +37,7 @@ Als erste Integration wird [Open-Meteo](https://open-meteo.com/en/docs) angebund
 - stündliche Wetterabholung und Speicherung des letzten gültigen Ergebnisses
 - aktuelle Wetteranzeige oben rechts im Header aus dem aktiven globalen Wetter-Standard
 - erster zentraler Noob2Claw-Cronjob mit Integrations-Dispatcher
-- geschützte manuelle Ausführung und nachvollziehbare Logs
+- geschützte manuelle Ausführung und strukturierte Anwendungslaufprotokolle
 - manuelle Prüfung und reale Einrichtung des System-Cronjobs im Video
 
 ---
