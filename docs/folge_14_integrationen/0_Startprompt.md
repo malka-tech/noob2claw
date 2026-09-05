@@ -309,8 +309,10 @@ Führe die Einrichtung vollständig nach
 abgeschlossen, wenn neben dem manuellen Test auch ein echter automatisch durch
 Cron gestarteter Lauf nachgewiesen wurde.
 
-Ermittle den korrekten realen Aufruf der neu erstellten `cron.php`. Bevorzuge
-PHP-CLI, absolute Pfade und den tatsächlichen Webserver-Benutzer. Übernimm den
+Ermittle den korrekten realen Aufruf der neu erstellten `cron.php`. Verwende
+PHP-CLI, absolute Pfade und standardmäßig die persönliche Crontab des bereits
+angemeldeten Benutzers `noobclaw`; hierfür sind weder `sudo` noch ein Wechsel zu
+`www-data` erforderlich. Übernimm den
 vollständigen geprüften Crontab-Eintrag aus der Einrichtungsanleitung. Passe
 Benutzer, Projekt- und Logpfad an das Zielsystem an. Die Doppelstart-Sicherung
 erfolgt ausschließlich über die atomaren Anwendungssperren.

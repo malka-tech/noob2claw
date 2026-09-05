@@ -19,7 +19,7 @@ Die Beispiele verwenden:
 Projekt:        /var/www/noobclaw
 Cron-Einstieg:  /var/www/noobclaw/cron.php
 PHP:            /usr/bin/php
-Dienstbenutzer: www-data
+Dienstbenutzer: noobclaw
 Betriebsdaten:  /var/www/noobclaw/var
 ```
 
@@ -29,6 +29,49 @@ Befehlen konsistent ersetzt werden.
 `cron.php` liegt direkt im Projektstamm. Der Pfad enthält bewusst keinen
 Unterordner `/public/`. Die Datei ist trotzdem ausschließlich per PHP-CLI
 ausführbar und lehnt HTTP-Aufrufe ab.
+
+## Kompakter Ablauf zum Kopieren
+
+Diese Befehle werden direkt als angemeldeter Benutzer `noobclaw` ausgeführt:
+
+```bash
+whoami
+command -v php
+php -v
+systemctl is-active cron
+ls -l /var/www/noobclaw/cron.php
+test -r /var/www/noobclaw/cron.php && echo 'OK: cron.php lesbar' || echo 'FEHLER: cron.php nicht lesbar'
+install -d -m 0750 /var/www/noobclaw/var
+touch /var/www/noobclaw/var/noob2claw-cron.log
+chmod 0640 /var/www/noobclaw/var/noob2claw-cron.log
+test -w /var/www/noobclaw/var/noob2claw-cron.log && echo 'OK: Log beschreibbar' || echo 'FEHLER: Log nicht beschreibbar'
+/usr/bin/php /var/www/noobclaw/cron.php integrationen
+echo "Exit-Code: $?"
+crontab -l
+crontab -e
+```
+
+In `crontab -e` genau einmal einfügen:
+
+```cron
+# Noob2Claw – zentraler Integrations-Dispatcher
+* * * * * umask 027; /usr/bin/php /var/www/noobclaw/cron.php integrationen >> /var/www/noobclaw/var/noob2claw-cron.log 2>&1
+```
+
+Danach:
+
+```bash
+crontab -l
+```
+
+Mindestens einen Minutenwechsel abwarten und anschließend prüfen:
+
+```bash
+tail -n 50 /var/www/noobclaw/var/noob2claw-cron.log
+```
+
+Bei einem Fehler abbrechen und den passenden ausführlichen Abschnitt unten
+verwenden. Rechte niemals pauschal mit `chmod 777` öffnen.
 
 ---
 
@@ -41,12 +84,9 @@ systemctl is-active cron
 ls -l /var/www/noobclaw/cron.php
 ```
 
-Falls der Cron-Dienst nicht aktiv ist:
-
-```bash
-sudo systemctl enable --now cron
-systemctl status cron --no-pager
-```
+Falls `systemctl is-active cron` nicht `active` meldet, muss ein Administrator
+den Cron-Dienst einmalig aktivieren. Die nachfolgenden Schritte selbst benötigen
+keine `sudo`-Berechtigung.
 
 `cron.php` muss ein reiner CLI-Einstieg sein. HTTP-Aufrufe müssen abgelehnt
 werden. Die Datei lädt den normalen Anwendungs-Bootstrap und ruft die zentrale
@@ -54,20 +94,26 @@ Business-Logik auf; sie enthält selbst keine Integrationsfachlogik.
 
 ---
 
-# 3. Richtigen Dienstbenutzer ermitteln
+# 3. Angemeldeten Benutzer prüfen
 
-Auf einer üblichen Debian-/Apache-Installation läuft die Anwendung als
-`www-data`. Das muss geprüft werden:
+Der Cronjob wird in der persönlichen Crontab des bereits angemeldeten Benutzers
+`noobclaw` eingerichtet. Dadurch sind weder `sudo` noch ein Wechsel zu
+`www-data` erforderlich.
 
 ```bash
-ps -eo user,comm | grep -E 'apache2|php-fpm'
-stat -c '%U:%G %n' /var/www/noobclaw
+whoami
+```
+
+Die Ausgabe muss lauten:
+
+```text
+noobclaw
 ```
 
 Leserecht auf den Cron-Einstieg prüfen:
 
 ```bash
-sudo -u www-data test -r /var/www/noobclaw/cron.php
+test -r /var/www/noobclaw/cron.php
 echo $?
 ```
 
@@ -78,17 +124,15 @@ echo $?
 # 4. Betriebs- und Logverzeichnis vorbereiten
 
 ```bash
-sudo install -d \
-  -o www-data \
-  -g www-data \
-  -m 0750 \
-  /var/www/noobclaw/var
+install -d -m 0750 /var/www/noobclaw/var
+touch /var/www/noobclaw/var/noob2claw-cron.log
+chmod 0640 /var/www/noobclaw/var/noob2claw-cron.log
 ```
 
 Schreibrecht prüfen:
 
 ```bash
-sudo -u www-data test -w /var/www/noobclaw/var
+test -w /var/www/noobclaw/var
 echo $?
 ```
 
@@ -99,11 +143,10 @@ vollständige sensitive Anbieterantworten erscheinen.
 
 # 5. Cron-Einstieg manuell testen
 
-Der spätere Cronbefehl wird zuerst unter exakt demselben Benutzer ausgeführt:
+Der spätere Cronbefehl wird zuerst unter dem angemeldeten Benutzer ausgeführt:
 
 ```bash
-sudo -u www-data \
-  /usr/bin/php \
+/usr/bin/php \
   /var/www/noobclaw/cron.php \
   integrationen
 
@@ -131,34 +174,34 @@ Danach in Noob2Claw prüfen:
 # 6. Vorhandene Crontab prüfen
 
 ```bash
-sudo crontab -u www-data -l
+crontab -l
 ```
 
-Wenn für `www-data` noch keine Crontab existiert, ist die entsprechende Meldung
-normal. Vor dem Einrichten muss ausgeschlossen werden, dass bereits ein gleicher
-Noob2Claw-Eintrag vorhanden ist.
+Wenn für `noobclaw` noch keine Crontab existiert, ist die Meldung
+`no crontab for noobclaw` normal. Vor dem Einrichten muss ausgeschlossen werden,
+dass bereits ein gleicher Noob2Claw-Eintrag vorhanden ist.
 
 ---
 
 # 7. Cronjob produktiv einrichten
 
-Crontab des Dienstbenutzers öffnen:
+Persönliche Crontab öffnen:
 
 ```bash
-sudo crontab -u www-data -e
+crontab -e
 ```
 
 Folgenden Block eintragen:
 
 ```cron
 # Noob2Claw – zentraler Integrations-Dispatcher
-* * * * * /usr/bin/php /var/www/noobclaw/cron.php integrationen >> /var/www/noobclaw/var/noob2claw-cron.log 2>&1
+* * * * * umask 027; /usr/bin/php /var/www/noobclaw/cron.php integrationen >> /var/www/noobclaw/var/noob2claw-cron.log 2>&1
 ```
 
 Anschließend den gespeicherten Eintrag kontrollieren:
 
 ```bash
-sudo crontab -u www-data -l
+crontab -l
 ```
 
 Die Cronzeile enthält ausschließlich absolute Pfade und keine Secrets. Ein
@@ -172,14 +215,14 @@ nicht erforderlich. Maßgeblich ist das Verhalten des Zielsystems.
 Nach mindestens einem Minutenwechsel das Ausgabelog prüfen:
 
 ```bash
-sudo tail -n 50 /var/www/noobclaw/var/noob2claw-cron.log
+tail -n 50 /var/www/noobclaw/var/noob2claw-cron.log
 ```
 
 Bei Bedarf zusätzlich:
 
 ```bash
 systemctl status cron --no-pager
-sudo journalctl -u cron --since '10 minutes ago' --no-pager
+journalctl -u cron --since '10 minutes ago' --no-pager
 ```
 
 In der Noob2Claw-Oberfläche muss ein neuer, automatisch erzeugter
@@ -214,6 +257,16 @@ Ein Fachfehler darf andere fällige Integrationseinträge nicht blockieren.
 
 # 10. Häufige Fehler
 
+## `noobclaw` ist nicht in der sudoers-Datei
+
+Für diese Anleitung wird `sudo` nicht benötigt. Der Benutzer `noobclaw`
+verwaltet seine eigene Crontab mit `crontab -l` und `crontab -e`. Nicht
+`sudo crontab -u www-data ...` verwenden.
+
+Falls bereits `crontab -e` selbst verweigert wird oder der Cron-Dienst inaktiv
+ist, muss ein Administrator den Dienst beziehungsweise `/etc/cron.allow` und
+`/etc/cron.deny` prüfen.
+
 ## `cron.php` wurde nicht gefunden
 
 Projektpfad und Groß-/Kleinschreibung prüfen:
@@ -227,16 +280,16 @@ ls -l /var/www/noobclaw/cron.php
 Benutzer sowie Lese- und Schreibrechte prüfen:
 
 ```bash
-sudo -u www-data test -r /var/www/noobclaw/cron.php
-sudo -u www-data test -w /var/www/noobclaw/var
+test -r /var/www/noobclaw/cron.php
+test -w /var/www/noobclaw/var
 ```
 
 ## Manueller Lauf funktioniert, automatischer Lauf nicht
 
 ```bash
-sudo crontab -u www-data -l
+crontab -l
 systemctl status cron --no-pager
-sudo journalctl -u cron --since '10 minutes ago' --no-pager
+journalctl -u cron --since '10 minutes ago' --no-pager
 ```
 
 Besonders häufig sind ein falscher Benutzer, relative Pfade oder fehlende
@@ -253,19 +306,21 @@ Schreibrechte die Ursache.
 - absoluten PHP-Pfad prüfen,
 - Logverzeichnis und Schreibrechte prüfen,
 - Cron-Journal kontrollieren,
-- Befehl exakt als Dienstbenutzer manuell ausführen.
+- Befehl exakt als Benutzer `noobclaw` manuell ausführen.
 
 ---
 
 # 11. Cronlog begrenzen
 
 Vor dem produktiven Dauerbetrieb muss außerdem eine vorhandene zentrale
-Logrotation beziehungsweise Logbegrenzung auf
+anwendungsseitige Logbegrenzung auf
 `/var/www/noobclaw/var/noob2claw-cron.log` angewendet werden. Falls das Projekt
-noch keine zentrale Lösung besitzt, ist auf Debian eine `logrotate`-Regel mit
-begrenzter Zahl archivierter Dateien, Komprimierung und passenden Dateirechten
-einzurichten. Das Cronlog darf nicht unbegrenzt wachsen. Anwendungsläufe bleiben
-zusätzlich strukturiert in der Datenbank protokolliert.
+noch keine zentrale Lösung besitzt, muss ein Administrator ergänzend eine
+`logrotate`-Regel mit begrenzter Zahl archivierter Dateien, Komprimierung und
+passenden Dateirechten einrichten. Dieser optionale Systemschritt kann durch
+`noobclaw` ohne Administratorrechte nicht vorgenommen werden. Das Cronlog darf
+nicht unbegrenzt wachsen. Anwendungsläufe bleiben zusätzlich strukturiert in der
+Datenbank protokolliert.
 
 ---
 
@@ -274,7 +329,7 @@ zusätzlich strukturiert in der Datenbank protokolliert.
 Crontab öffnen:
 
 ```bash
-sudo crontab -u www-data -e
+crontab -e
 ```
 
 Nur den eindeutig kommentierten Noob2Claw-Block entfernen oder vorübergehend
@@ -283,7 +338,7 @@ auskommentieren. Andere Cronjobs dieses Benutzers dürfen nicht verändert werde
 Danach kontrollieren:
 
 ```bash
-sudo crontab -u www-data -l
+crontab -l
 ```
 
 Das Entfernen der Crontab-Zeile löscht keine Integrationsdaten oder Laufprotokolle.
@@ -295,7 +350,7 @@ Das Entfernen der Crontab-Zeile löscht keine Integrationsdaten oder Laufprotoko
 Der Cronjob gilt erst als vollständig eingerichtet, wenn:
 
 - der Cron-Dienst aktiv ist,
-- `cron.php integrationen` als Dienstbenutzer erfolgreich läuft,
+- `cron.php integrationen` als Benutzer `noobclaw` erfolgreich läuft,
 - Betriebs- und Logpfad beschreibbar sind,
 - parallele Läufe verhindert werden,
 - die Crontab genau einen kommentierten Noob2Claw-Eintrag enthält,
