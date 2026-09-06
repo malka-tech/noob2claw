@@ -41,7 +41,8 @@ vollständig:
 - sämtliche Dokumente unter `docs/folge_9_framework/`,
 - die relevanten Dokumente der Folgen 10 bis 18,
 - `docs/folge_19_sicherheitscheck/1_Sicherheitsaudit.md`,
-- `docs/folge_19_sicherheitscheck/2_Berichtsvorlage.md`.
+- `docs/folge_19_sicherheitscheck/2_Berichtsvorlage.md`,
+- `docs/folge_19_sicherheitscheck/3_Sicherheitszentrale.md`.
 
 Bestehende Architektur, zentrale Business-Funktionen, deutsche Benennung,
 Rechteverwaltung, API-/MCP-Routing, Dateiverwaltung, Logging und Migrationstechnik
@@ -121,7 +122,8 @@ Prüfe mindestens:
 - Jarvis-Maske und asynchrone Browserzustände,
 - Logging, Fehlerausgaben, Datenschutz und Aufbewahrungsfristen,
 - Datenbankschema und idempotente Migrationen,
-- Git-Historie auf versehentlich eingecheckte Secrets, ohne Treffer auszugeben.
+- Git-Historie auf versehentlich eingecheckte Secrets, ohne Treffer auszugeben,
+- Sicherheitsereignisse, IP-Firewall, Whitelist und deren vollständige Auditspur.
 
 Nicht vorhandene oder nicht erreichbare Bereiche werden als `nicht prüfbar`
 markiert, niemals als bestanden.
@@ -265,7 +267,28 @@ Verfolge Eingaben vollständig von Quelle bis Senke. Prüfe mindestens:
 
 ---
 
-# 8. Befunde belegen und priorisieren
+# 8. Sicherheitszentrale umsetzen
+
+Setze das vollständige Konzept aus `3_Sicherheitszentrale.md` um. Ergänze im
+Einstellungsbereich den Menüpunkt `Sicherheit` mit Übersicht, Ereignissen,
+IP-Firewall, Whitelist, Auditberichten und Einstellungen.
+
+Alle Web-, API- und MCP-Pfade verwenden denselben zentralen Dienst für
+Client-IP-Ermittlung, Firewallentscheidung und bereinigte Ereigniserfassung.
+Vertraue Proxy-Headern ausschließlich hinter serverseitig konfigurierten
+vertrauenswürdigen Proxys. Unterstütze IPv4, IPv6 und CIDR mit getesteten binären
+Vergleichen. Die Whitelist umgeht ausschließlich IP-Sperren, niemals Anmeldung,
+Tokens, Rechte, CSRF, Objektberechtigungen oder Validierung.
+
+Automatische Sperren sind konservativ, atomar, zeitlich begrenzt und zunächst in
+einem Beobachtungsmodus prüfbar. Verhindere Selbstaussperrung, verbiete globale
+Freigaben wie `0.0.0.0/0` und `::/0`, protokolliere jede Verwaltungsänderung und
+begrenze Aufbewahrung sowie Ereignisaggregation. Ein Agent darf keine produktive
+Firewallregel eigenmächtig aktivieren.
+
+---
+
+# 9. Befunde belegen und priorisieren
 
 Jeder bestätigte Befund erhält eine stabile ID `N2C-SEC-###` und alle Felder aus
 `2_Berichtsvorlage.md`.
@@ -294,7 +317,7 @@ eine ausdrückliche dokumentierte Risikoentscheidung durch den Verantwortlichen.
 
 ---
 
-# 9. Berichte vor der Behebung erstellen
+# 10. Berichte vor der Behebung erstellen
 
 Erzeuge außerhalb öffentlich ausgelieferter Verzeichnisse:
 
@@ -311,7 +334,7 @@ Der Bericht vor der Behebung wird nach Beginn der Fixphase nicht umgeschrieben.
 
 ---
 
-# 10. Bestätigte Lücken beheben
+# 11. Bestätigte Lücken beheben
 
 Behebe bestätigte, innerhalb des Auftrags sicher lösbare Probleme nach Priorität:
 
@@ -338,7 +361,7 @@ Halte an und fordere eine Freigabe an, wenn eine Behebung:
 
 ---
 
-# 11. Regression und erneuter Sicherheitscheck
+# 12. Regression und erneuter Sicherheitscheck
 
 Teste nach den Fixes mindestens:
 
@@ -351,6 +374,9 @@ Teste nach den Fixes mindestens:
 - Cronjob und Doppelstartschutz,
 - Speech-to-Text, Text-to-Speech und geschützte Medien,
 - Jarvis-Maske,
+- Sicherheitsmenü, Ereignisaggregation, IP-Firewall und Whitelist,
+- Client-IP-Ermittlung hinter vertrauenswürdigen und nicht vertrauenswürdigen Proxys,
+- IPv4-, IPv6- und CIDR-Regeln sowie Schutz vor Selbstaussperrung,
 - jeden bestätigten Befund,
 - alle zuvor ausgeführten automatischen Prüfungen.
 
@@ -359,7 +385,7 @@ Test bleibt `nicht prüfbar`.
 
 ---
 
-# 12. Abschlussbericht und Freigabe
+# 13. Abschlussbericht und Freigabe
 
 Erzeuge:
 
@@ -377,7 +403,9 @@ Der Abschluss enthält:
 - konkrete Änderungen und Tests,
 - Fehlalarme und Begründungen,
 - offene, akzeptierte und nicht prüfbare Risiken,
-- menschliche Freigabeentscheidung.
+- menschliche Freigabeentscheidung,
+- eingerichtete Sicherheitsrechte, Ereignistypen, Firewallregeln und
+  Aufbewahrungsfristen ohne sensible Echtdaten.
 
 Technische Mindestbedingung für eine Freigabeempfehlung:
 

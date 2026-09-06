@@ -128,6 +128,19 @@ aufgenommen.
 
 # 9. Regressionstests
 
+Für die Sicherheitszentrale mindestens ausweisen:
+
+| Bereich | Test | Ergebnis | Beleg |
+|---|---|---|---|
+| Menü und Rechte | Sichtbarkeit, Direktzugriff und Einzelrechte | | |
+| Ereignisse | Erfassung, Aggregation und Secret-Redaction | | |
+| Client-IP | direkter Zugriff und vertrauenswürdige Proxy-Kette | | |
+| IP-Spoofing | gefälschte Forwarding-Header werden ignoriert | | |
+| IP-Regeln | IPv4, IPv6, CIDR, Ablauf und Konflikte | | |
+| Whitelist | nur IP-Ausnahme, keine Umgehung anderer Kontrollen | | |
+| Lockout | Selbstsperrung und lokaler Wiederherstellungsweg | | |
+| Datenschutz | Aufbewahrung, Löschung und geschützter Export | | |
+
 | Bereich | Test | Ergebnis | Beleg |
 |---|---|---|---|
 | Login/Session | | | |

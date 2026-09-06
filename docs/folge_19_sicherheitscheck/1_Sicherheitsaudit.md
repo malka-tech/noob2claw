@@ -56,6 +56,7 @@ Zu betrachten sind mindestens:
 | Chat/KI | Nachrichten und Tools | Prompt Injection, fremde Chat-ID |
 | Cron | Hintergrundaufträge | HTTP-Aufruf, Doppelverarbeitung |
 | Datenbank | Geschäfts- und Personendaten | SQL-Injection, zu breite Rechte |
+| Sicherheitszentrale | Ereignisse und IP-Regeln | IP-Spoofing, Lockout, Logflut |
 
 # 4. Prüfkatalog
 
@@ -136,6 +137,18 @@ B darf die IDs von Benutzer A nicht lesen, verändern, exportieren oder löschen
 - atomare Eintrag-Claims mit TTL und sicherer Freigabe,
 - definierte Exit-Codes und isolierte Einzelfehler,
 - keine Secrets in Cronzeile oder Log.
+
+## Sicherheitszentrale und IP-Firewall
+
+- ein zentraler Ereignis- und Firewalldienst statt Prüfungen in einzelnen Seiten,
+- `REMOTE_ADDR` als Standard und Proxy-Header nur von vertrauenswürdigen Proxys,
+- korrekte Normalisierung und binäre Prüfung von IPv4, IPv6 und CIDR,
+- keine Passwörter, Tokens, Sessions, Cookies oder vollständigen Bodys im Ereignis,
+- Aggregation, Rate-Limit und begrenzte Aufbewahrung gegen Logfluten,
+- Whitelist umgeht nur IP-Sperren und niemals Authentifizierung oder Rechte,
+- automatische Sperren konservativ, atomar, zeitlich begrenzt und reversibel,
+- Schutz vor Selbstaussperrung und dokumentierter Wiederherstellungsweg,
+- eigene Rechte und Auditspur für Ansicht, Export und Regeländerungen.
 
 # 5. Toolstrategie
 

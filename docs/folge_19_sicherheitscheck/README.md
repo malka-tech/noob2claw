@@ -4,6 +4,10 @@ In Folge 19 prüft ein OpenClaw- oder Hermes-Agent den vollständigen aktuellen
 Noob2Claw-Code auf Sicherheitslücken. Bestätigte Befunde werden nachvollziehbar
 dokumentiert, priorisiert, kontrolliert behoben und anschließend erneut getestet.
 
+Zusätzlich entsteht im Einstellungsbereich der neue Menüpunkt `Sicherheit`. Er
+zeigt Angriffe und verdächtige Ereignisse, verwaltet eine anwendungsseitige
+IP-Firewall sowie eine kontrollierte Whitelist und dokumentiert jede Änderung.
+
 Die Prüfung verbindet automatische Werkzeuge mit manueller Datenfluss- und
 Berechtigungsanalyse. Ein Scannerfund allein gilt nicht als bestätigte
 Sicherheitslücke.
@@ -26,6 +30,8 @@ Ursachen kontrolliert beheben
 Regression und erneuter Sicherheitscheck
         ↓
 Abschlussbericht mit Restrisiken
+        ↓
+Sicherheitszentrale mit Ereignissen, IP-Firewall und Whitelist
 ```
 
 # Sicherheitsgrenzen
@@ -46,6 +52,8 @@ Abschlussbericht mit Restrisiken
 - `0_Startprompt.md` – vollständiger ausführbarer Auftrag für OpenClaw oder Hermes
 - `1_Sicherheitsaudit.md` – verbindlicher Prüf-, Behebungs- und Freigabeprozess
 - `2_Berichtsvorlage.md` – einheitliche Vorlage für Auditberichte und Befunde
+- `3_Sicherheitszentrale.md` – Angriffserkennung, Sicherheitsmenü, IP-Firewall,
+  Whitelist, Datenschutz und Abnahmetests
 
 # Referenzrahmen
 
@@ -64,6 +72,8 @@ konkrete Noob2Claw-Architektur und die Anforderungen aus den Folgen 9 bis 18.
 Nach Folge 19 existieren ein belegbarer Bericht vor der Behebung, ein Bericht
 nach der Behebung und eine maschinenlesbare Befundliste. Kritische und hohe
 Risiken sind entweder behoben oder ausdrücklich als nicht freigegeben markiert.
+Die Anwendung besitzt außerdem eine zentrale, rechtegeschützte Übersicht über
+Sicherheitsereignisse und kontrollierbare IP-Regeln.
 
 Eine Agentenprüfung ist keine Garantie vollständiger Sicherheit und ersetzt kein
 unabhängiges professionelles Penetrationstest-Attest.
