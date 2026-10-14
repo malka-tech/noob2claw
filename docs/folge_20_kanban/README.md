@@ -19,6 +19,7 @@ erweitert. Es bleibt bei genau einem Betriebssystem-Cronjob pro Installation.
 - allgemeiner Masterdispatcher für Integrationen und Kanban
 - ein einziger minütlicher System-Cronjob
 - Rechte, Audit, Benachrichtigungen, Tests und Fehlerbehandlung
+- konkrete MCP-Tools für Agenten zum Lesen und Bearbeiten von Kanban-Aufgaben
 
 # Enthaltene Dateien
 
@@ -27,6 +28,8 @@ erweitert. Es bleibt bei genau einem Betriebssystem-Cronjob pro Installation.
   Agentenzustellung, Sicherheit und Tests
 - `2_Mastercronjob_Einrichtung.md` – Umstellung vom Integrations-Cronjob auf den
   allgemeinen Mastercronjob
+- [3_Kanban_MCP_Funktionen.md](3_Kanban_MCP_Funktionen.md) – verbindlicher
+  Toolkatalog, Parameter, Agentenrechte, Konflikterkennung und MCP-Abnahme
 
 # Cron-Entscheidung
 

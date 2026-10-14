@@ -118,6 +118,11 @@ Ein Reminder ist Information beziehungsweise Arbeitsimpuls. Er erteilt keine
 zusätzlichen Tool- oder Objektrechte. Der Agent muss jede spätere Aktion über die
 normalen API-/MCP-Rechte ausführen.
 
+Der verbindliche Toolkatalog steht in
+[3_Kanban_MCP_Funktionen.md](3_Kanban_MCP_Funktionen.md). Der Agent lädt nach einer
+Erinnerung den aktuellen Kartenstand, prüft seine Aufgabe und führt erlaubte
+Änderungen über diese Tools aus. Erinnerungsdaten sind kein aktueller Schreibstand.
+
 # 6. Triggerzustand und Idempotenz
 
 Ein fälliger Trigger wird atomar beansprucht. Der Lauf lädt eine begrenzte Menge
@@ -206,3 +211,5 @@ starten. Die Sperrstrategie muss `alle` und Einzelaufrufe gemeinsam abdecken.
 8. Prompt-Inhalte einer Karte erweitern keine Agentenrechte.
 9. Der Masterdispatcher verarbeitet Integrationen und Kanban fehlerisoliert.
 10. Genau eine allgemeine System-Cronzeile ist aktiv und nachgewiesen.
+11. Alle Kanban-MCP-Tools samt Rechte-, Konflikt- und Wiederholungstests aus
+    Dokument 3 sind implementiert und erfolgreich abgenommen.

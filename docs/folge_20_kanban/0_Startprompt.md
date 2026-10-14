@@ -30,7 +30,8 @@ Auftragsverwaltung aus Folge 10, die Cron-Architektur und Einrichtungsanleitung
 aus Folge 14 sowie:
 
 - `docs/folge_20_kanban/1_Kanban_und_Agenten_Trigger.md`,
-- `docs/folge_20_kanban/2_Mastercronjob_Einrichtung.md`.
+- `docs/folge_20_kanban/2_Mastercronjob_Einrichtung.md`,
+- `docs/folge_20_kanban/3_Kanban_MCP_Funktionen.md` sowie die MCP-Grundlagen aus Folge 13.
 
 Erhalte lokale Benutzeränderungen. Analysiere vor der Umsetzung den realen Code,
 das Schema, die vorhandene Agentenkommunikation, Rechte, Navigation, API, MCP,
@@ -54,7 +55,10 @@ Implementiere:
 11. Triggerläufe, Zustellstatus, Backoff und Audit,
 12. allgemeinen Masterdispatcher über den vorhandenen CLI-Einstieg `cron.php`,
 13. Umstellung des realen System-Cronjobs von `integrationen` auf `alle`,
-14. Rechte, CSRF-Schutz, Validierung, Migrationen und vollständige Tests.
+14. Rechte, CSRF-Schutz, Validierung, Migrationen und vollständige Tests,
+15. alle Kanban-MCP-Tools aus Dokument 3 über den vorhandenen `mcp.php`,
+16. agentenspezifische Toollisten, Boardrechte, Versionsprüfung und idempotente
+    Schreibaktionen einschließlich MCP-Abnahmetests.
 
 # 3. Kanban-Bereich
 
@@ -196,6 +200,8 @@ Teste mindestens:
 - Bündelung ohne leere oder doppelte Erinnerungen,
 - atomare Claims, TTL, Fehlerisolierung, Backoff und Wiederaufnahme,
 - Agent sieht nur berechtigte Karten und keine fremden Boarddaten,
+- alle MCP-Tests aus Dokument 3 einschließlich direkter unerlaubter Aufrufe,
+  konkurrierender Änderungen und wiederholter Schreibrequests,
 - Prompt-Injection in Karte oder Kommentar erweitert keine Agentenrechte,
 - `cron.php integrationen`, `cron.php kanban_erinnerungen` und `cron.php alle`,
 - unbekannte Aufgabe und HTTP-Aufruf werden abgelehnt,
@@ -214,4 +220,6 @@ finale Cronzeile, Tests, Ergebnisse und bekannte Einschränkungen.
 Die Folge ist erst abgeschlossen, wenn Kanban und Agenten-Trigger funktionieren,
 `cron.php alle` Integrationen und Kanban fehlerisoliert verarbeitet, genau eine
 allgemeine Cronzeile real eingerichtet ist und ein automatischer Lauf beider
-Bereiche nachgewiesen wurde.
+Bereiche nachgewiesen wurde. Zusätzlich müssen die Kanban-MCP-Tools für einen
+berechtigten Agenten nachweisbar funktionieren und unberechtigte Zugriffe gemäß
+Dokument 3 abgewiesen werden. Eine versandte Erinnerung allein genügt nicht.
